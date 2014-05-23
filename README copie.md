@@ -1,4 +1,0 @@
-QAWIProject
-===========
-
-Projet annuel
