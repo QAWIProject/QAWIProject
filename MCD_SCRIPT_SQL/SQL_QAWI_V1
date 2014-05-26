@@ -1,0 +1,128 @@
+#------------------------------------------------------------
+#        Script MySQL.
+#------------------------------------------------------------
+
+
+CREATE TABLE UTILISATEUR(
+        id_utilisateur        int (11) Auto_increment  NOT NULL ,
+        nom_utilisateur       Varchar (255) NOT NULL ,
+        email_utilisateur     Varchar (250) NOT NULL ,
+        mdp_utilisateur       Varchar (255) NOT NULL ,
+        est_admin_utilisateur Bool NOT NULL ,
+        nb_point_utilisateur  Int ,
+        id_planete            Int NOT NULL ,
+        id_classement         Int NOT NULL ,
+        PRIMARY KEY (id_utilisateur )
+)ENGINE=InnoDB;
+
+
+CREATE TABLE PLANETE(
+        id_planete        int (11) Auto_increment  NOT NULL ,
+        nom_planete       Varchar (25) NOT NULL ,
+        img_planete       Varchar (25) NOT NULL ,
+        coordonee_planete Int NOT NULL ,
+        id_univers        Int NOT NULL ,
+        PRIMARY KEY (id_planete )
+)ENGINE=InnoDB;
+
+
+CREATE TABLE UNIVERS(
+        id_univers  int (11) Auto_increment  NOT NULL ,
+        nom_univers Varchar (25) NOT NULL ,
+        PRIMARY KEY (id_univers )
+)ENGINE=InnoDB;
+
+
+CREATE TABLE BATIMENT(
+        id_batiment                int (11) Auto_increment  NOT NULL ,
+        nom_batiment               Varchar (25) NOT NULL ,
+        cout_or_batiment           Int NOT NULL ,
+        cout_argent_batiment       Int NOT NULL ,
+        cout_pierre_batiment       Int NOT NULL ,
+        cout_nourriture_batiment   Int NOT NULL ,
+        niveau_batiment            Int NOT NULL ,
+        tmps_construction_batiment Time NOT NULL ,
+        PRIMARY KEY (id_batiment )
+)ENGINE=InnoDB;
+
+
+CREATE TABLE VAISSEAU(
+        id_veaiseau                int (11) Auto_increment  NOT NULL ,
+        nom_vaisseau               Varchar (25) NOT NULL ,
+        puissance_atq_vaisseau     Int NOT NULL ,
+        puissance_def_vaisseau     Int NOT NULL ,
+        cout_or_vaisseau           Int NOT NULL ,
+        cout_argent_vaisseau       Int NOT NULL ,
+        cout_pierre_vaisseau       Int NOT NULL ,
+        cout_nourriture_vaisseau   Int NOT NULL ,
+        tmps_construction_vaisseau Time ,
+        id_planete                 Int NOT NULL ,
+        PRIMARY KEY (id_veaiseau )
+)ENGINE=InnoDB;
+
+
+CREATE TABLE CLASSEMENT(
+        id_classement   int (11) Auto_increment  NOT NULL ,
+        rang_classement Int NOT NULL ,
+        PRIMARY KEY (id_classement )
+)ENGINE=InnoDB;
+
+
+CREATE TABLE RESSOURCE(
+        id_ressource  int (11) Auto_increment  NOT NULL ,
+        nom_ressource Varchar (25) NOT NULL ,
+        id_batiment   Int NOT NULL ,
+        PRIMARY KEY (id_ressource )
+)ENGINE=InnoDB;
+
+
+CREATE TABLE RAPPORT(
+        id_rapport         int (11) Auto_increment  NOT NULL ,
+        date_heure_rapport Datetime ,
+        PRIMARY KEY (id_rapport )
+)ENGINE=InnoDB;
+
+
+CREATE TABLE CONSTRUIRE(
+        id_planete  Int NOT NULL ,
+        id_batiment Int NOT NULL ,
+        PRIMARY KEY (id_planete ,id_batiment )
+)ENGINE=InnoDB;
+
+
+CREATE TABLE CREER(
+        id_planete  Int NOT NULL ,
+        id_veaiseau Int NOT NULL ,
+        PRIMARY KEY (id_planete ,id_veaiseau )
+)ENGINE=InnoDB;
+
+
+CREATE TABLE ATTAQUER(
+        id_utilisateur Int NOT NULL ,
+        id_planete     Int NOT NULL ,
+        id_rapport     Int NOT NULL ,
+        PRIMARY KEY (id_utilisateur ,id_planete ,id_rapport )
+)ENGINE=InnoDB;
+
+
+CREATE TABLE STOCKER(
+        qte_stock    Int ,
+        id_ressource Int NOT NULL ,
+        id_planete   Int NOT NULL ,
+        PRIMARY KEY (id_ressource ,id_planete )
+)ENGINE=InnoDB;
+
+ALTER TABLE UTILISATEUR ADD CONSTRAINT FK_UTILISATEUR_id_planete FOREIGN KEY (id_planete) REFERENCES PLANETE(id_planete);
+ALTER TABLE UTILISATEUR ADD CONSTRAINT FK_UTILISATEUR_id_classement FOREIGN KEY (id_classement) REFERENCES CLASSEMENT(id_classement);
+ALTER TABLE PLANETE ADD CONSTRAINT FK_PLANETE_id_univers FOREIGN KEY (id_univers) REFERENCES UNIVERS(id_univers);
+ALTER TABLE VAISSEAU ADD CONSTRAINT FK_VAISSEAU_id_planete FOREIGN KEY (id_planete) REFERENCES PLANETE(id_planete);
+ALTER TABLE RESSOURCE ADD CONSTRAINT FK_RESSOURCE_id_batiment FOREIGN KEY (id_batiment) REFERENCES BATIMENT(id_batiment);
+ALTER TABLE CONSTRUIRE ADD CONSTRAINT FK_CONSTRUIRE_id_planete FOREIGN KEY (id_planete) REFERENCES PLANETE(id_planete);
+ALTER TABLE CONSTRUIRE ADD CONSTRAINT FK_CONSTRUIRE_id_batiment FOREIGN KEY (id_batiment) REFERENCES BATIMENT(id_batiment);
+ALTER TABLE CREER ADD CONSTRAINT FK_CREER_id_planete FOREIGN KEY (id_planete) REFERENCES PLANETE(id_planete);
+ALTER TABLE CREER ADD CONSTRAINT FK_CREER_id_veaiseau FOREIGN KEY (id_veaiseau) REFERENCES VAISSEAU(id_veaiseau);
+ALTER TABLE ATTAQUER ADD CONSTRAINT FK_ATTAQUER_id_utilisateur FOREIGN KEY (id_utilisateur) REFERENCES UTILISATEUR(id_utilisateur);
+ALTER TABLE ATTAQUER ADD CONSTRAINT FK_ATTAQUER_id_planete FOREIGN KEY (id_planete) REFERENCES PLANETE(id_planete);
+ALTER TABLE ATTAQUER ADD CONSTRAINT FK_ATTAQUER_id_rapport FOREIGN KEY (id_rapport) REFERENCES RAPPORT(id_rapport);
+ALTER TABLE STOCKER ADD CONSTRAINT FK_STOCKER_id_ressource FOREIGN KEY (id_ressource) REFERENCES RESSOURCE(id_ressource);
+ALTER TABLE STOCKER ADD CONSTRAINT FK_STOCKER_id_planete FOREIGN KEY (id_planete) REFERENCES PLANETE(id_planete);
