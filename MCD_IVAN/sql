@@ -1,6 +1,6 @@
 CREATE TABLE utilisateur (id_util bigint NOT NULL, nom_util varchar(255), email_util varchar(255), mdp_util varchar(255), est_admin_util bool, id_planete bigint);
 
-CREATE TABLE type_vaisseau (id_type_vaisseau bigint NOT NULL, nom_type_vaisseau varchar(255), prix_or_type_vaisseau bigint, prix_argent_type_vaisseau bigint, prix_pierre_type_vaisseau bigint, prix_nourriture_type_vaisseau bigint);
+CREATE TABLE type_vaisseau (id_type_vaisseau bigint NOT NULL, nom_type_vaisseau varchar(255), prix_or_type_vaisseau bigint, prix_argent_type_vaisseau bigint, prix_pierre_type_vaisseau bigint, prix_nourriture_type_vaisseau bigint, nb_point_attaque_type_vaisseau bigint, nb_point_vaisseau_type_vaisseau bigint);
 
 CREATE TABLE vaisseau (id_vaisseau bigint NOT NULL, id_planete bigint, id_type_vaisseau bigint);
 
@@ -19,22 +19,28 @@ CREATE TABLE univers (id_univers bigint NOT NULL, nom_univers varchar(255));
 CREATE TABLE appartenir (id_planete bigint NOT NULL, id_univers bigint NOT NULL);
 
 ALTER TABLE utilisateur ADD CONSTRAINT PK_utilisateur PRIMARY KEY (id_util);
+ALTER TABLE utilisateur MODIFY COLUMN id_util bigint auto_increment;
 
 ALTER TABLE type_vaisseau ADD CONSTRAINT PK_type_vaisseau PRIMARY KEY (id_type_vaisseau);
 
 ALTER TABLE vaisseau ADD CONSTRAINT PK_vaisseau PRIMARY KEY (id_vaisseau);
+ALTER TABLE vaisseau MODIFY COLUMN id_vaisseau bigint auto_increment;
 
 ALTER TABLE planete ADD CONSTRAINT PK_planete PRIMARY KEY (id_planete);
+ALTER TABLE planete MODIFY COLUMN id_planete bigint auto_increment;
 
 ALTER TABLE type_batiment ADD CONSTRAINT PK_type_batiment PRIMARY KEY (id_type_batiment);
 
 ALTER TABLE usine ADD CONSTRAINT PK_usine PRIMARY KEY (id_usine);
+ALTER TABLE usine MODIFY COLUMN id_usine bigint auto_increment;
 
 ALTER TABLE batiment ADD CONSTRAINT PK_batiment PRIMARY KEY (id_batiment);
+ALTER TABLE batiment MODIFY COLUMN id_batiment bigint auto_increment;
 
 ALTER TABLE type_usine ADD CONSTRAINT PK_type_usine PRIMARY KEY (id_type_usine);
 
 ALTER TABLE univers ADD CONSTRAINT PK_univers PRIMARY KEY (id_univers);
+ALTER TABLE univers MODIFY COLUMN id_univers bigint auto_increment;
 
 ALTER TABLE appartenir ADD CONSTRAINT PK_appartenir PRIMARY KEY (id_planete, id_univers);
 
@@ -58,3 +64,20 @@ ALTER TABLE appartenir ADD CONSTRAINT FK_appartenir_id_planete FOREIGN KEY (id_p
 
 ALTER TABLE appartenir ADD CONSTRAINT FK_appartenir_id_univers FOREIGN KEY (id_univers) REFERENCES univers (id_univers);
 
+INSERT INTO `utilisateur`(`id_util`, `nom_util`, `email_util`, `mdp_util`, `est_admin_util`, `id_planete`) VALUES (0,"Ivan","klarman.ivan@gmail.com","MDP1992",false,null);
+
+INSERT INTO `planete`(`id_planete`, `nom_planete`, `qte_or`, `qte_argent`, `qte_pierre`, `qte_nourriture`, `id_util`) VALUES (0,"Azeroth",100,100,100,0,0);
+UPDATE `utilisateur` SET `id_planete`=0;
+
+INSERT INTO `type_usine`(`id_type_usine`, `nom_type_usine`) VALUES (0,"Usine Or");
+INSERT INTO `type_usine`(`id_type_usine`, `nom_type_usine`) VALUES (1,"Usine Argent");
+INSERT INTO `type_usine`(`id_type_usine`, `nom_type_usine`) VALUES (2,"Usine Pierre");
+INSERT INTO `type_usine`(`id_type_usine`, `nom_type_usine`) VALUES (3,"Usine Nourriture");
+
+INSERT INTO `type_vaisseau`(`id_type_vaisseau`, `nom_type_vaisseau`, `prix_or_type_vaisseau`, `prix_argent_type_vaisseau`, `prix_pierre_type_vaisseau`, `prix_nourriture_type_vaisseau`, `nb_point_attaque_type_vaisseau`, `nb_point_vaisseau_type_vaisseau`) VALUES (0,"Chasseur Léger",20,10,10,0,50,10);
+INSERT INTO `type_vaisseau`(`id_type_vaisseau`, `nom_type_vaisseau`, `prix_or_type_vaisseau`, `prix_argent_type_vaisseau`, `prix_pierre_type_vaisseau`, `prix_nourriture_type_vaisseau`, `nb_point_attaque_type_vaisseau`, `nb_point_vaisseau_type_vaisseau`) VALUES (1,"Chasseur Lourd",40,20,20,0,70,20);
+INSERT INTO `type_vaisseau`(`id_type_vaisseau`, `nom_type_vaisseau`, `prix_or_type_vaisseau`, `prix_argent_type_vaisseau`, `prix_pierre_type_vaisseau`, `prix_nourriture_type_vaisseau`, `nb_point_attaque_type_vaisseau`, `nb_point_vaisseau_type_vaisseau`) VALUES (2,"Vaisseau de Bataille",80,30,20,20,200,250);
+INSERT INTO `type_vaisseau`(`id_type_vaisseau`, `nom_type_vaisseau`, `prix_or_type_vaisseau`, `prix_argent_type_vaisseau`, `prix_pierre_type_vaisseau`, `prix_nourriture_type_vaisseau`, `nb_point_attaque_type_vaisseau`, `nb_point_vaisseau_type_vaisseau`) VALUES (3,"Vaisseau de Destruction",30,100,30,50,400,300);
+INSERT INTO `type_vaisseau`(`id_type_vaisseau`, `nom_type_vaisseau`, `prix_or_type_vaisseau`, `prix_argent_type_vaisseau`, `prix_pierre_type_vaisseau`, `prix_nourriture_type_vaisseau`, `nb_point_attaque_type_vaisseau`, `nb_point_vaisseau_type_vaisseau`) VALUES (4,"Croiseur",80,120,50,50,200,600);
+INSERT INTO `type_vaisseau`(`id_type_vaisseau`, `nom_type_vaisseau`, `prix_or_type_vaisseau`, `prix_argent_type_vaisseau`, `prix_pierre_type_vaisseau`, `prix_nourriture_type_vaisseau`, `nb_point_attaque_type_vaisseau`, `nb_point_vaisseau_type_vaisseau`) VALUES (5,"Bombardier",500,250,200,80,1000,400);
+INSERT INTO `type_vaisseau`(`id_type_vaisseau`, `nom_type_vaisseau`, `prix_or_type_vaisseau`, `prix_argent_type_vaisseau`, `prix_pierre_type_vaisseau`, `prix_nourriture_type_vaisseau`, `nb_point_attaque_type_vaisseau`, `nb_point_vaisseau_type_vaisseau`) VALUES (6,"Qawi ZX",1000,1000,1200,500,1000,1000);
