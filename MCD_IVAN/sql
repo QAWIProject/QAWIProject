@@ -1,0 +1,60 @@
+CREATE TABLE utilisateur (id_util bigint NOT NULL, nom_util varchar(255), email_util varchar(255), mdp_util varchar(255), est_admin_util bool, id_planete bigint);
+
+CREATE TABLE type_vaisseau (id_type_vaisseau bigint NOT NULL, nom_type_vaisseau varchar(255), prix_or_type_vaisseau bigint, prix_argent_type_vaisseau bigint, prix_pierre_type_vaisseau bigint, prix_nourriture_type_vaisseau bigint);
+
+CREATE TABLE vaisseau (id_vaisseau bigint NOT NULL, id_planete bigint, id_type_vaisseau bigint);
+
+CREATE TABLE planete (id_planete bigint NOT NULL, nom_planete varchar(255), qte_or bigint, qte_argent bigint, qte_pierre bigint, qte_nourriture bigint, id_util bigint);
+
+CREATE TABLE type_batiment (id_type_batiment bigint NOT NULL, nom_type_batiment varchar(255));
+
+CREATE TABLE usine (id_usine bigint NOT NULL, prod_usine bigint, niveau_usine bigint, id_planete bigint, id_type_usine bigint);
+
+CREATE TABLE batiment (id_batiment bigint NOT NULL, niveau_batiment bigint, cout_batiment bigint, id_planete bigint, id_type_batiment bigint);
+
+CREATE TABLE type_usine (id_type_usine bigint NOT NULL, nom_type_usine varchar(255));
+
+CREATE TABLE univers (id_univers bigint NOT NULL, nom_univers varchar(255));
+
+CREATE TABLE appartenir (id_planete bigint NOT NULL, id_univers bigint NOT NULL);
+
+ALTER TABLE utilisateur ADD CONSTRAINT PK_utilisateur PRIMARY KEY (id_util);
+
+ALTER TABLE type_vaisseau ADD CONSTRAINT PK_type_vaisseau PRIMARY KEY (id_type_vaisseau);
+
+ALTER TABLE vaisseau ADD CONSTRAINT PK_vaisseau PRIMARY KEY (id_vaisseau);
+
+ALTER TABLE planete ADD CONSTRAINT PK_planete PRIMARY KEY (id_planete);
+
+ALTER TABLE type_batiment ADD CONSTRAINT PK_type_batiment PRIMARY KEY (id_type_batiment);
+
+ALTER TABLE usine ADD CONSTRAINT PK_usine PRIMARY KEY (id_usine);
+
+ALTER TABLE batiment ADD CONSTRAINT PK_batiment PRIMARY KEY (id_batiment);
+
+ALTER TABLE type_usine ADD CONSTRAINT PK_type_usine PRIMARY KEY (id_type_usine);
+
+ALTER TABLE univers ADD CONSTRAINT PK_univers PRIMARY KEY (id_univers);
+
+ALTER TABLE appartenir ADD CONSTRAINT PK_appartenir PRIMARY KEY (id_planete, id_univers);
+
+ALTER TABLE utilisateur ADD CONSTRAINT FK_utilisateur_id_planete FOREIGN KEY (id_planete) REFERENCES planete (id_planete);
+
+ALTER TABLE vaisseau ADD CONSTRAINT FK_vaisseau_id_planete FOREIGN KEY (id_planete) REFERENCES planete (id_planete);
+
+ALTER TABLE vaisseau ADD CONSTRAINT FK_vaisseau_id_type_vaisseau FOREIGN KEY (id_type_vaisseau) REFERENCES type_vaisseau (id_type_vaisseau);
+
+ALTER TABLE planete ADD CONSTRAINT FK_planete_id_util FOREIGN KEY (id_util) REFERENCES utilisateur (id_util);
+
+ALTER TABLE usine ADD CONSTRAINT FK_usine_id_planete FOREIGN KEY (id_planete) REFERENCES planete (id_planete);
+
+ALTER TABLE usine ADD CONSTRAINT FK_usine_id_type_usine FOREIGN KEY (id_type_usine) REFERENCES type_usine (id_type_usine);
+
+ALTER TABLE batiment ADD CONSTRAINT FK_batiment_id_planete FOREIGN KEY (id_planete) REFERENCES planete (id_planete);
+
+ALTER TABLE batiment ADD CONSTRAINT FK_batiment_id_type_batiment FOREIGN KEY (id_type_batiment) REFERENCES type_batiment (id_type_batiment);
+
+ALTER TABLE appartenir ADD CONSTRAINT FK_appartenir_id_planete FOREIGN KEY (id_planete) REFERENCES planete (id_planete);
+
+ALTER TABLE appartenir ADD CONSTRAINT FK_appartenir_id_univers FOREIGN KEY (id_univers) REFERENCES univers (id_univers);
+
