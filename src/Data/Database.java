@@ -1,8 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package Data;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -64,7 +59,7 @@ public class Database {
 			if(this.port == ""){
 				 String DBurl = "jdbc:mysql://"+this.serveur+"/"+this.nameDb;
 				 Connection con = DriverManager.getConnection(DBurl,this.user,this.password);
-                                 Statement stmt = con.createStatement();
+                 Statement stmt = con.createStatement();
 			}else{
 				String DBurl = "jdbc:mysql://"+this.serveur+":"+this.port+"/"+this.nameDb;
 				 Connection con = DriverManager.getConnection(DBurl,this.user,this.password);
