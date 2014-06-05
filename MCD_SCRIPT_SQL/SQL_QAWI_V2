@@ -47,7 +47,7 @@ CREATE TABLE BATIMENT(
 
 
 CREATE TABLE VAISSEAU(
-        id_veaiseau                int (11) Auto_increment  NOT NULL ,
+        id_vaisseau                int (11) Auto_increment  NOT NULL ,
         nom_vaisseau               Varchar (25) NOT NULL ,
         puissance_atq_vaisseau     Int NOT NULL ,
         puissance_def_vaisseau     Int NOT NULL ,
@@ -57,7 +57,7 @@ CREATE TABLE VAISSEAU(
         cout_nourriture_vaisseau   Int NOT NULL ,
         tmps_construction_vaisseau Time ,
         id_planete                 Int NOT NULL ,
-        PRIMARY KEY (id_veaiseau )
+        PRIMARY KEY (id_vaisseau )
 )ENGINE=InnoDB;
 
 
@@ -92,8 +92,8 @@ CREATE TABLE CONSTRUIRE(
 
 CREATE TABLE CREER(
         id_planete  Int NOT NULL ,
-        id_veaiseau Int NOT NULL ,
-        PRIMARY KEY (id_planete ,id_veaiseau )
+        id_vaisseau Int NOT NULL ,
+        PRIMARY KEY (id_planete ,id_vaisseau )
 )ENGINE=InnoDB;
 
 
@@ -120,7 +120,7 @@ ALTER TABLE RESSOURCE ADD CONSTRAINT FK_RESSOURCE_id_batiment FOREIGN KEY (id_ba
 ALTER TABLE CONSTRUIRE ADD CONSTRAINT FK_CONSTRUIRE_id_planete FOREIGN KEY (id_planete) REFERENCES PLANETE(id_planete);
 ALTER TABLE CONSTRUIRE ADD CONSTRAINT FK_CONSTRUIRE_id_batiment FOREIGN KEY (id_batiment) REFERENCES BATIMENT(id_batiment);
 ALTER TABLE CREER ADD CONSTRAINT FK_CREER_id_planete FOREIGN KEY (id_planete) REFERENCES PLANETE(id_planete);
-ALTER TABLE CREER ADD CONSTRAINT FK_CREER_id_veaiseau FOREIGN KEY (id_veaiseau) REFERENCES VAISSEAU(id_veaiseau);
+ALTER TABLE CREER ADD CONSTRAINT FK_CREER_id_vaisseau FOREIGN KEY (id_vaisseau) REFERENCES VAISSEAU(id_vaisseau);
 ALTER TABLE ATTAQUER ADD CONSTRAINT FK_ATTAQUER_id_utilisateur FOREIGN KEY (id_utilisateur) REFERENCES UTILISATEUR(id_utilisateur);
 ALTER TABLE ATTAQUER ADD CONSTRAINT FK_ATTAQUER_id_planete FOREIGN KEY (id_planete) REFERENCES PLANETE(id_planete);
 ALTER TABLE ATTAQUER ADD CONSTRAINT FK_ATTAQUER_id_rapport FOREIGN KEY (id_rapport) REFERENCES RAPPORT(id_rapport);
