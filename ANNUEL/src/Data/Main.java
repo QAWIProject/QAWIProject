@@ -78,7 +78,7 @@ public class Main {
 		 us.setId_usine("4");
 		 us.setNiveau("0");
 		 mod.monterNiveauUsine(ivan, us);
-		 
+		 mod.addRessourcesAllUsine();
 	}
 	
 	

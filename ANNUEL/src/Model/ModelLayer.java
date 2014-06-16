@@ -9,6 +9,7 @@ import BD.Connexion;
 import BD.InsertData;
 import BD.SelectData;
 import BD.UpdateData;
+import BusinessClass.Planete;
 import BusinessClass.User;
 import BusinessClass.Usine;
 import BusinessClass.Vaisseau;
@@ -17,7 +18,8 @@ public class ModelLayer {
 	private List<User> oListUser = new ArrayList<User>();
 	private List<Vaisseau> oListVaisseau = new ArrayList<Vaisseau>();
 	private List<Usine> oListUsine = new ArrayList<Usine>();
-	private Connexion  con = new Connexion("QAWI","Localhost","root","root");
+	private List<Planete> oListPlanete = new ArrayList<Planete>();
+	private Connexion  con = new Connexion("QAWI","localhost","root","root");
 	public ModelLayer(){
 		con.connect();
 	}
@@ -31,11 +33,11 @@ public class ModelLayer {
 				+ "SELECT nom_type_vaisseau"
 				+ "FROM vaisseau , type_vaisseau, planete "
 				+ "WHERE planete.id_planete = vaisseau.id_planete ");
-		System.out.println("Recupérer le type de vaisseau en fonction de la personne : "+ select.getResultatReqString());
+		System.out.println("Recuperer le type de vaisseau en fonction de la personne : "+ select.getResultatReqString());
 		return select.getResultatReqString();
 	}
 	/**
-	 * Récupère tous les utilisateurs en BDD
+	 * Recupere tous les utilisateurs en BDD
 	 * @return liste d'utilisateurs
 	 */
 	public List<User> getAllUser(){
@@ -62,6 +64,62 @@ public class ModelLayer {
 				e.printStackTrace();
 			}
 		return oListUser;
+	}
+	/**
+	 * Recupere toutes les usines en BDD
+	 * @return liste des Usines
+	 */
+	public List<Usine> getAllUsine(){
+		try {
+		SelectData select = new SelectData(con.getConnection(),""
+				+ "SELECT *"
+				+ "FROM usine");
+		ResultSet res = select.getResults();
+				if(res.first() !=  false){
+					do{
+						Usine currentUsine = new Usine();
+						currentUsine.setId_type_usine(Integer.toString(res.getInt("id_type_usine")));
+						currentUsine.setId_usine(Integer.toString(res.getInt("id_usine")));
+						currentUsine.setNiveau(Integer.toString(res.getInt("niveau_usine")));
+						currentUsine.setProd_usine(Integer.toString(res.getInt("prod_usine")));
+						currentUsine.setPrix_usine(Integer.toString(res.getInt("prix_usine")));
+						oListUsine.add(currentUsine);
+					}while(res.next());
+				}
+			}catch (SQLException e) {
+				System.out.println("ERROR");
+				e.printStackTrace();
+			}
+		return oListUsine;
+	}
+	/**
+	 * Recupere toutes les planetes en BDD
+	 * @return liste des planetes
+	 */
+	public List<Planete> getAllPlanete(){
+		try {
+		SelectData select = new SelectData(con.getConnection(),""
+				+ "SELECT *"
+				+ "FROM planete");
+		ResultSet res = select.getResults();
+				if(res.first() !=  false){
+					do{
+						Planete currentPlanete = new Planete();
+						currentPlanete.setId_planete(Integer.toString(res.getInt("id_planete")));
+						currentPlanete.setId_util(Integer.toString(res.getInt("id_util")));
+						currentPlanete.setQte_or(res.getInt("qte_or"));
+						currentPlanete.setQte_argent(res.getInt("qte_argent"));
+						currentPlanete.setQte_pierre(res.getInt("qte_pierre"));
+						currentPlanete.setQte_nourriture(res.getInt("qte_nourriture"));
+						currentPlanete.setNom_planete(res.getString("nom_planete"));
+						oListPlanete.add(currentPlanete);
+					}while(res.next());
+				}
+			}catch (SQLException e) {
+				System.out.println("ERROR");
+				e.printStackTrace();
+			}
+		return oListPlanete;
 	}
 	/**
 	 * Montre les utilisateurs
@@ -178,5 +236,49 @@ public class ModelLayer {
 		+"SET usine.niveau_usine = "+newNiveau+" "
 		+"WHERE usine.id_planete = "+oUser.getIdPlanete()+" "
 		+"AND usine.id_usine = "+us.getId_usine());
+	}
+	/**
+	 * PRODUCTION DES RESSOURCES DYNAMIQUE
+	 */
+	public void addRessourcesAllUsine(){
+		List<Usine> listeUsines = new ArrayList<Usine>();
+		List<Planete> listePlanetes = new ArrayList<Planete>();
+		listeUsines = getAllUsine();
+		listePlanetes = getAllPlanete();
+		for(Planete pl : listePlanetes){
+			for (Usine farm : listeUsines){
+				switch(farm.getId_type_usine()){
+					case "0" :	// AJOUT DE L'OR
+								UpdateData updOr = new UpdateData(con.getConnection(),
+								" UPDATE planete JOIN usine ON planete.id_planete = usine.id_planete "
+								+"SET planete.qte_or = "+pl.getQte_or()+" + "+farm.getProd_usine()+" "
+								+"WHERE usine.id_planete = planete.id_planete "
+								+"AND usine.id_type_usine = 0 ");
+								break;
+								
+					case "1" : //AJOUT DE L'ARGENT
+								UpdateData updArgent = new UpdateData(con.getConnection(),
+								" UPDATE planete JOIN usine ON planete.id_planete = usine.id_planete "
+								+"SET planete.qte_argent = "+pl.getQte_argent()+" + "+farm.getProd_usine()+" "
+								+"AND usine.id_type_usine = 1 ");
+								break;
+					case "2" : 	//AJOUT DE LA PIERRE
+								UpdateData updPierre = new UpdateData(con.getConnection(),
+								" UPDATE planete JOIN usine ON planete.id_planete = usine.id_planete "
+								+"SET planete.qte_pierre = "+pl.getQte_pierre()+" + "+farm.getProd_usine()+" "
+								+"AND usine.id_type_usine = 2 ");
+								break;
+					case "3" :  //AJOUT DE LA NOURRITURE
+								UpdateData updNourriture = new UpdateData(con.getConnection(),
+								" UPDATE planete JOIN usine ON planete.id_planete = usine.id_planete "
+								+"SET planete.qte_nourriture = "+pl.getQte_nourriture()+" + "+farm.getProd_usine()+" "
+								+"AND usine.id_type_usine = 3 ");
+								break;
+				}
+				
+				
+			}
+		}
+		
 	}
 }

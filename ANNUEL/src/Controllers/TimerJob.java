@@ -3,6 +3,9 @@ package Controllers;
 import java.util.Date;
 import java.util.Timer;
 import java.util.TimerTask;
+
+import BD.Connexion;
+import Model.ModelLayer;
 	 
 	public class TimerJob extends TimerTask {
 	    @Override
@@ -16,11 +19,12 @@ import java.util.TimerTask;
 	    }
 	    private void completeTask() {
 	        try {
-	        	//Connexion con = new Connexion("QAWI","Localhost","root","root");
+	        	Connexion con = new Connexion("QAWI","Localhost","root","root");
 	            // Définit 20 secondes d'attentes pour que la tâche se termine
 	        	//SelectData select = new SelectData(con.getConnection(),"SELECT * FROM utilisateur");
-	        	System.out.println("+++++++++\nTraitement A faire\n+++++++++");
-	            Thread.sleep(800);
+	        	ModelLayer mod = new ModelLayer();
+	        	mod.addRessourcesAllUsine();
+	            Thread.sleep(60000);
 	        } catch (InterruptedException e) {
 	            e.printStackTrace();
 	        }

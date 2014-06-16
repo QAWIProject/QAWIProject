@@ -75,9 +75,10 @@ public class Connexion {
 		 Connection con;
 		try {
 			con = DriverManager.getConnection(DBurl,this.user,this.password);
-                        //System.out.println("Connexion r�ussie.");
+                        //System.out.println("Connexion reussie.");
 			return con;
 		} catch (SQLException e) {
+			e.printStackTrace();
 			return null;
 		}
 	}
