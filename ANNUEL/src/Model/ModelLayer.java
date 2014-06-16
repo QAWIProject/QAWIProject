@@ -260,18 +260,21 @@ public class ModelLayer {
 								UpdateData updArgent = new UpdateData(con.getConnection(),
 								" UPDATE planete JOIN usine ON planete.id_planete = usine.id_planete "
 								+"SET planete.qte_argent = "+pl.getQte_argent()+" + "+farm.getProd_usine()+" "
+								+"WHERE usine.id_planete = planete.id_planete "
 								+"AND usine.id_type_usine = 1 ");
 								break;
 					case "2" : 	//AJOUT DE LA PIERRE
 								UpdateData updPierre = new UpdateData(con.getConnection(),
 								" UPDATE planete JOIN usine ON planete.id_planete = usine.id_planete "
 								+"SET planete.qte_pierre = "+pl.getQte_pierre()+" + "+farm.getProd_usine()+" "
+								+"WHERE usine.id_planete = planete.id_planete "
 								+"AND usine.id_type_usine = 2 ");
 								break;
 					case "3" :  //AJOUT DE LA NOURRITURE
 								UpdateData updNourriture = new UpdateData(con.getConnection(),
 								" UPDATE planete JOIN usine ON planete.id_planete = usine.id_planete "
 								+"SET planete.qte_nourriture = "+pl.getQte_nourriture()+" + "+farm.getProd_usine()+" "
+								+"WHERE usine.id_planete = planete.id_planete "
 								+"AND usine.id_type_usine = 3 ");
 								break;
 				}
