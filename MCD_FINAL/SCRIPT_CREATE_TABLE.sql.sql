@@ -10,7 +10,6 @@ CREATE TABLE UTILISATEUR(
         mdp_utilisateur       Varchar (255) NOT NULL ,
         est_admin_utilisateur Bool NOT NULL ,
         nb_point_utilisateur  Int ,
-        id_planete            Int NOT NULL ,
         PRIMARY KEY (id_utilisateur )
 )ENGINE=InnoDB;
 
@@ -18,12 +17,12 @@ CREATE TABLE UTILISATEUR(
 CREATE TABLE PLANETE(
         id_planete             int (11) Auto_increment  NOT NULL ,
         nom_planete            Varchar (25) NOT NULL ,
-        img_planete            Varchar (25) NOT NULL ,
         coordonee_planete      Int NOT NULL ,
         qte_or_planete         Int ,
         qte_argent_planete     Int ,
         qte_pierre_planete     Int ,
         qte_nourriture_planete Int ,
+        id_utilisateur         Int NOT NULL ,
         id_univers             Int NOT NULL ,
         PRIMARY KEY (id_planete )
 )ENGINE=InnoDB;
@@ -118,7 +117,7 @@ CREATE TABLE TYPE_USINE(
         PRIMARY KEY (id_type_usine )
 )ENGINE=InnoDB;
 
-ALTER TABLE UTILISATEUR ADD CONSTRAINT FK_UTILISATEUR_id_planete FOREIGN KEY (id_planete) REFERENCES PLANETE(id_planete);
+ALTER TABLE PLANETE ADD CONSTRAINT FK_PLANETE_id_utilisateur FOREIGN KEY (id_utilisateur) REFERENCES UTILISATEUR(id_utilisateur);
 ALTER TABLE PLANETE ADD CONSTRAINT FK_PLANETE_id_univers FOREIGN KEY (id_univers) REFERENCES UNIVERS(id_univers);
 ALTER TABLE VAISSEAU ADD CONSTRAINT FK_VAISSEAU_id_planete FOREIGN KEY (id_planete) REFERENCES PLANETE(id_planete);
 ALTER TABLE VAISSEAU ADD CONSTRAINT FK_VAISSEAU_id_type_vaisseau FOREIGN KEY (id_type_vaisseau) REFERENCES TYPE_VAISSEAU(id_type_vaisseau);
