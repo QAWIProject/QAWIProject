@@ -1,0 +1,6 @@
+Les gars faut que je vous montre samedi car c'est le seul jour ou je suis dispo.
+j'ai fait la partie interface elle est presque completement fini je m'explique:
+je peux me connecter ou m'inscrire ensuite j'arrive sur ma page de joueur sur cette page j'ai la possibilité de voir mes ressources aller sur batiment
+voir les batiment avec le le bouton construire eet le niveau et temps que ça met. Ensuite je peux aussi voir les vaisseau et voir le meme truc que pour les batiment.
+et avec les images bien sur.
+Je m'occupe aussi de l'interface admin mais ça se doit se faire en jEE donc du web. on se fait un skype samedi pour faire le point les gars tchouss
