@@ -6,7 +6,10 @@ public class Usine {
 	private String id_type_usine;
 	private String prod_usine;
 	private String nom_type_usine;
-	private String prix_usine;
+	private String cout_or;
+	private String cout_argent;
+	private String cout_pierre;
+	private String cout_nourriture;
 	
 	public Usine(){
 		
@@ -52,11 +55,35 @@ public class Usine {
 		this.nom_type_usine = nom_type_usine;
 	}
 
-	public String getPrix_usine() {
-		return prix_usine;
+	public String getCout_or() {
+		return cout_or;
 	}
 
-	public void setPrix_usine(String prix_usine) {
-		this.prix_usine = prix_usine;
+	public void setCout_or(String cout_or) {
+		this.cout_or = cout_or;
+	}
+
+	public String getCout_argent() {
+		return cout_argent;
+	}
+
+	public void setCout_argent(String cout_argent) {
+		this.cout_argent = cout_argent;
+	}
+
+	public String getCout_pierre() {
+		return cout_pierre;
+	}
+
+	public void setCout_pierre(String cout_pierre) {
+		this.cout_pierre = cout_pierre;
+	}
+
+	public String getCout_nourriture() {
+		return cout_nourriture;
+	}
+
+	public void setCout_nourriture(String cout_nourriture) {
+		this.cout_nourriture = cout_nourriture;
 	}
 }

@@ -4,7 +4,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-
 import BD.Connexion;
 import BD.InsertData;
 import BD.SelectData;
@@ -82,7 +81,10 @@ public class ModelLayer {
 						currentUsine.setId_usine(Integer.toString(res.getInt("id_usine")));
 						currentUsine.setNiveau(Integer.toString(res.getInt("niveau_usine")));
 						currentUsine.setProd_usine(Integer.toString(res.getInt("prod_usine")));
-						currentUsine.setPrix_usine(Integer.toString(res.getInt("prix_usine")));
+						currentUsine.setCout_or(Integer.toString(res.getInt("cout_or")));
+						currentUsine.setCout_argent(Integer.toString(res.getInt("cout_argent")));
+						currentUsine.setCout_pierre(Integer.toString(res.getInt("cout_pierre")));
+						currentUsine.setCout_nourriture(Integer.toString(res.getInt("cout_nourriture")));
 						oListUsine.add(currentUsine);
 					}while(res.next());
 				}
@@ -183,7 +185,7 @@ public class ModelLayer {
 	public List<Usine> getAllUsineByUser(User usr){
 		try {
 		SelectData select = new SelectData(con.getConnection(),""
-				+ "SELECT usine.prix_usine,usine.id_usine,usine.id_type_usine,type_usine.nom_type_usine,usine.prod_usine,usine.niveau_usine "
+				+ "SELECT usine.cout_or,cout_argent,cout_pierre,cout_nourriture,usine.id_usine,usine.id_type_usine,type_usine.nom_type_usine,usine.prod_usine,usine.niveau_usine "
 				+ "FROM usine,type_usine,planete,utilisateur "
 				+ "WHERE type_usine.id_type_usine = usine.id_type_usine "
 				+ "AND planete.id_planete = usine.id_planete "
@@ -198,7 +200,10 @@ public class ModelLayer {
 						currentUsine.setNom_type_usine(res.getString("nom_type_usine"));
 						currentUsine.setProd_usine(Integer.toString(res.getInt("prod_usine")));
 						currentUsine.setNiveau(Integer.toString(res.getInt("niveau_usine")));
-						currentUsine.setPrix_usine(Integer.toString(res.getInt("prix_usine")));
+						currentUsine.setCout_or(Integer.toString(res.getInt("cout_or")));
+						currentUsine.setCout_argent(Integer.toString(res.getInt("cout_argent")));
+						currentUsine.setCout_pierre(Integer.toString(res.getInt("cout_pierre")));
+						currentUsine.setCout_nourriture(Integer.toString(res.getInt("cout_nourriture")));
 						oListUsine.add(currentUsine);
 					}while(res.next());
 				}
@@ -218,7 +223,6 @@ public class ModelLayer {
 			System.out.println("ID TYPE USINE  --->   "+usine.getId_type_usine());
 			System.out.println("NIVEAU USINE  --->   "+usine.getNiveau());
 			System.out.println("PRODUCTION  --->   "+usine.getProd_usine());
-			System.out.println("PRIX PROCHAIN NIVEAU  --->   "+usine.getPrix_usine());
 			System.out.println("TYPE D'USINE  --->   "+usine.getNom_type_usine());
 			System.out.println("----------");
 		}
@@ -277,11 +281,25 @@ public class ModelLayer {
 								+"WHERE usine.id_planete = planete.id_planete "
 								+"AND usine.id_type_usine = 3 ");
 								break;
-				}
-				
-				
+				}			
 			}
 		}
-		
+	}
+	/**
+	 * Amélioration d'une usine
+	 * @param usine
+	 */
+	public void ameliorerUsine(Usine usine){
+		int newNiveau = Integer.parseInt(usine.getNiveau()) + 1;
+		int newProdUsine = Integer.parseInt(usine.getProd_usine()) * newNiveau;
+		UpdateData upUsine = new UpdateData(con.getConnection()," "
+				+"UPDATE usine "
+				+"SET usine.prod_usine = " + newProdUsine + " ,"
+				+"usine.niveau_usine = "+ Integer.toString(newNiveau) +" ,"
+				+"usine.cout_or = "+ Integer.parseInt(usine.getCout_or())*2 + " ,"
+				+"usine.cout_argent = "+ Integer.parseInt(usine.getCout_argent())*2 + " ,"
+				+"usine.cout_pierre = "+ Integer.parseInt(usine.getCout_pierre())*2 + " ,"
+				+"usine.cout_nourriture = "+ Integer.parseInt(usine.getCout_nourriture())*2 + " "
+				+"WHERE usine.id_usine = "+ usine.getId_usine());
 	}
 }

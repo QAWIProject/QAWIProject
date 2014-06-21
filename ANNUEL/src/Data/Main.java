@@ -70,15 +70,21 @@ public class Main {
 		 Vaisseau cl = new Vaisseau();
 		 cl.setTypeVaisseau("1");
 		 mod.insertVaisseau(ivan,cl);
-		 
 		 /**
-		  * Monter le niveau d'une usine
+		  * Améliorer une usine
+		  * OK
 		  */
 		 Usine us = new Usine();
 		 us.setId_usine("4");
-		 us.setNiveau("0");
-		 mod.monterNiveauUsine(ivan, us);
-		 mod.addRessourcesAllUsine();
+		 us.setId_type_usine("3");
+		 us.setNiveau("1");
+		 us.setProd_usine("200");
+		 us.setCout_or("10");
+		 us.setCout_argent("15");
+		 us.setCout_pierre("20");
+		 us.setCout_nourriture("15");
+		 mod.ameliorerUsine(us);
+		 
 	}
 	
 	
