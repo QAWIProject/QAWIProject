@@ -1,13 +1,27 @@
 package Model;
 
+import java.io.IOException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Properties;
+
+import javax.activation.DataHandler;
+import javax.activation.DataSource;
+import javax.activation.FileDataSource;
+import javax.imageio.ImageIO;
+import javax.mail.*;
+import javax.mail.internet.AddressException;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeMessage;
+import javax.swing.ImageIcon;
+
 import BD.Connexion;
 import BD.InsertData;
 import BD.SelectData;
 import BD.UpdateData;
+import BusinessClass.Flotte;
 import BusinessClass.Planete;
 import BusinessClass.User;
 import BusinessClass.Usine;
@@ -18,7 +32,7 @@ public class ModelLayer {
 	private List<Vaisseau> oListVaisseau = new ArrayList<Vaisseau>();
 	private List<Usine> oListUsine = new ArrayList<Usine>();
 	private List<Planete> oListPlanete = new ArrayList<Planete>();
-	private Connexion  con = new Connexion("QAWI","localhost","root","root");
+	private Connexion  con = new Connexion("QAWI","localhost","root","");
 	public ModelLayer(){
 		con.connect();
 	}
@@ -286,7 +300,7 @@ public class ModelLayer {
 		}
 	}
 	/**
-	 * AmÃ©lioration d'une usine
+	 * Amelioration d'une usine
 	 * @param usine
 	 */
 	public void ameliorerUsine(Usine usine){
@@ -301,5 +315,99 @@ public class ModelLayer {
 				+"usine.cout_pierre = "+ Integer.parseInt(usine.getCout_pierre())*2 + " ,"
 				+"usine.cout_nourriture = "+ Integer.parseInt(usine.getCout_nourriture())*2 + " "
 				+"WHERE usine.id_usine = "+ usine.getId_usine());
+	}
+	/**
+	 * Attaquer une planete
+	 * @param fl_att
+	 * @param fl_def
+	 * @param pl_attaquant
+	 * @param pl_defenseur
+	 * @throws IOException 
+	 */
+	public void attaquerJoueur(Flotte fl_att,Flotte fl_def,Planete pl_attaquant,Planete pl_defenseur) throws IOException{
+		if(fl_att.getValAttaque() > fl_def.getValDefense()){
+			System.out.println("L'Attaquant à gagner");
+			generationRapport(2);
+		}else if(fl_att.getValAttaque() == fl_def.getValDefense()){
+			System.out.println("Les deux flottent ont été détruit, aucun gagnant.");
+			generationRapport(1);
+		}else{
+			System.out.println("Le défenseur à anéanti la flotte attaquante.");
+			generationRapport(0);
+		}
+	}
+	public void generationRapport(int annonce) throws IOException{
+		final String username = "klarman.ivan@gmail.com";
+		final String password = "Vet1felor";
+ 
+		Properties props = new Properties();
+		props.put("mail.smtp.auth", "true");
+		props.put("mail.smtp.starttls.enable", "true");
+		props.put("mail.smtp.host", "smtp.gmail.com");
+		props.put("mail.smtp.port", "587");
+ 
+		Session session = Session.getInstance(props,
+		  new javax.mail.Authenticator() {
+			protected PasswordAuthentication getPasswordAuthentication() {
+				return new PasswordAuthentication(username, password);
+			}
+		  });
+		if(annonce == 0){
+			try {
+				Message message = new MimeMessage(session);
+				message.setFrom(new InternetAddress("klarman.ivan@gmail.com"));
+				message.setRecipients(Message.RecipientType.TO,
+					InternetAddress.parse("klarman.ivan@gmail.com"));
+				message.setSubject("Qawi - Rapport de Combat");
+				 DataSource fds = new FileDataSource("images\\Background.jpg");
+				message.setDataHandler(new DataHandler(fds));
+				message.setContent("<h2><b>Salut combattant des étoiles <br /><br />"
+					+ " <p style='color:red;'>La flotte attaquante à échouer !</p></b></h2>"
+					+ "<img height='500' width='500' src=\"http://nsa34.casimages.com/img/2014/06/23/140623010637705974.jpg\">", 
+           "text/html");
+	 
+				Transport.send(message);
+	 
+				System.out.println("Done");
+	 
+			} catch (MessagingException e) {
+				throw new RuntimeException(e);
+			}
+		}else if(annonce == 1){
+			try {
+				Message message = new MimeMessage(session);
+				message.setFrom(new InternetAddress("klarman.ivan@gmail.com"));
+				message.setRecipients(Message.RecipientType.TO,
+					InternetAddress.parse("klarman.ivan@gmail.com"));
+				message.setSubject("Qawi - Rapport de Combat");
+				message.setText("Salut combattant des étoiles"
+					+ "\n\n La flotte attaquante et défensive sont égales, aucun des deux joueurs n'est gagnant !");
+	 
+				Transport.send(message);
+	 
+				System.out.println("Done");
+	 
+			} catch (MessagingException e) {
+				throw new RuntimeException(e);
+			}
+		}else{
+			try {
+				Message message = new MimeMessage(session);
+				message.setFrom(new InternetAddress("klarman.ivan@gmail.com"));
+				message.setRecipients(Message.RecipientType.TO,
+					InternetAddress.parse("klarman.ivan@gmail.com"));
+				message.setSubject("Qawi - Rapport de Combat");
+				message.setText("Salut combattant des étoiles"
+					+ "\n\n La bataille a été remporté par la flotte attaquante !");
+	 
+				Transport.send(message);
+	 
+				System.out.println("Done");
+	 
+			} catch (MessagingException e) {
+				throw new RuntimeException(e);
+			}
+		}
+		
 	}
 }

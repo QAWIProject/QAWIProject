@@ -1,10 +1,13 @@
 package Data;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 import BD.Connexion;
 import BD.SelectData;
 import BD.StartConnexion;
+import BusinessClass.Flotte;
+import BusinessClass.Planete;
 import BusinessClass.User;
 import BusinessClass.Usine;
 import BusinessClass.Vaisseau;
@@ -14,14 +17,13 @@ public class Main {
 	// ++++++++++++++++++++++++++++++++++++++++++
 	// ++++++++++++ VUE et CONTROLEUR +++++++++++
 	// ++++++++++++++++++++++++++++++++++++++++++
-		
 	public static void main(String[] args) {
 		ModelLayer mod = new ModelLayer();
 		List<User> oListUser = new ArrayList<User>();
 		List<Vaisseau> oListVaisseau = new ArrayList<Vaisseau>();
 		List<Usine> oListUsine = new ArrayList<Usine>();
 		/**
-		 * Récupération Utilisateur dans une liste d'utilisateur 
+		 * Recuperation Utilisateur dans une liste d'utilisateur 
 		 * Exemples : 
 		 * List<User> maListeUserPrésentEnBDD = mod.getAllUser();
 		 */
@@ -30,10 +32,8 @@ public class Main {
 		 * Affiche tous les utilisateurs
 		 */
 		 mod.displayAllUser();
-		 
-		 
 		/** 
-		 * Récupération de tous les Vaisseaux des utilisateurs dans une liste de Vaisseau 
+		 * Recuperation de tous les Vaisseaux des utilisateurs dans une liste de Vaisseau 
 		 * Exemples : 
 		 * List<Vaisseau> maListeVaisseauDeUserPrésentEnBDD = mod.getAllVaisseau();
 		 */
@@ -44,11 +44,8 @@ public class Main {
 		  * Affichage de tous les vaisseaux
 		  */
 		 mod.displayAllVaisseau();
-		 
-		 
-		 
 		/** 
-		 * Récupération de toutes les Usines des utilisateurs dans une liste d'usine 
+		 * Recuperation de toutes les Usines des utilisateurs dans une liste d'usine 
 		 * Exemples : 
 		 * List<Vaisseau> maListeVaisseauDeUserPrésentEnBDD = mod.getAllVaisseau();
 		 */
@@ -59,8 +56,6 @@ public class Main {
 		  * Affichage de toutes les usines
 		  */
 		 mod.displayAllUsine();
-		 
-		 
 		 /**
 		  * Insertion d'un vaisseau en fonction de l'utilisateur
 		  * OK
@@ -71,7 +66,7 @@ public class Main {
 		 cl.setTypeVaisseau("1");
 		 mod.insertVaisseau(ivan,cl);
 		 /**
-		  * Améliorer une usine
+		  * Ameliorer une usine
 		  * OK
 		  */
 		 Usine us = new Usine();
@@ -84,16 +79,25 @@ public class Main {
 		 us.setCout_pierre("20");
 		 us.setCout_nourriture("15");
 		 mod.ameliorerUsine(us);
+		 /**
+		  * Combat de deux flottes avec envoi de rapport
+		  * OK - Gerer les utilisateurs des plan�tes pour envoyer un mail
+		  */
+		 Flotte att = new Flotte();
+		 Flotte def = new Flotte();
+		 Planete p_attaque = new Planete();
+		 Planete p_attaquante = new Planete();
+		 Vaisseau v1 = new Vaisseau();
+		 Vaisseau v2 = new Vaisseau();
+		 v1.setTypeVaisseau("1");
+		 v2.setTypeVaisseau("5");
+		 att.ajouterVaisseau(v1);
+		 def.ajouterVaisseau(v2);
+		 try {
+			mod.attaquerJoueur(att,  def, p_attaque, p_attaquante);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 		 
 	}
-	
-	
-			//unPrix.getPrice();
-			//String table = "type_vaisseau";
-			//String[] valeurs = {"0","Destructeur","1200","300"};
-			//String[] valeurs2 = {"1","Chasseur Leger","100","50"};
-			//InsertData uneInsertion = new InsertData(uneConnex.getConnection(),table,valeurs);
-			//System.out.println(uneInsertion.getReq());
-			//SelectData unSelect = new SelectData(uneConnex.getConnection(),"SELECT * FROM type_vaisseau");
-			//System.out.println(unSelect.getResultatReq());
 }
