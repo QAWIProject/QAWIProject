@@ -57,17 +57,15 @@ CREATE TABLE `planete` (
   `qte_argent` bigint(20) DEFAULT NULL,
   `qte_pierre` bigint(20) DEFAULT NULL,
   `qte_nourriture` bigint(20) DEFAULT NULL,
-  `id_util` bigint(20) DEFAULT NULL,
-  PRIMARY KEY (`id_planete`),
-  KEY `FK_planete_id_util` (`id_util`)
+  PRIMARY KEY (`id_planete`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
 --
 -- Contenu de la table `planete`
 --
 
-INSERT INTO `planete` (`id_planete`, `nom_planete`, `qte_or`, `qte_argent`, `qte_pierre`, `qte_nourriture`, `id_util`) VALUES
-(0, 'Azeroth', 0, 0, 0, 0, 0);
+INSERT INTO `planete` (`id_planete`, `nom_planete`, `qte_or`, `qte_argent`, `qte_pierre`, `qte_nourriture`) VALUES
+(0, 'Azeroth', 0, 0, 0, 0);
 
 -- --------------------------------------------------------
 
@@ -306,12 +304,6 @@ ALTER TABLE `appartenir`
 ALTER TABLE `batiment`
   ADD CONSTRAINT `FK_batiment_id_planete` FOREIGN KEY (`id_planete`) REFERENCES `planete` (`id_planete`),
   ADD CONSTRAINT `FK_batiment_id_type_batiment` FOREIGN KEY (`id_type_batiment`) REFERENCES `type_batiment` (`id_type_batiment`);
-
---
--- Contraintes pour la table `planete`
---
-ALTER TABLE `planete`
-  ADD CONSTRAINT `FK_planete_id_util` FOREIGN KEY (`id_util`) REFERENCES `utilisateur` (`id_util`);
 
 --
 -- Contraintes pour la table `usine`
