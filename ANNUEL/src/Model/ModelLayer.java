@@ -32,7 +32,7 @@ public class ModelLayer {
 	private List<Vaisseau> oListVaisseau = new ArrayList<Vaisseau>();
 	private List<Usine> oListUsine = new ArrayList<Usine>();
 	private List<Planete> oListPlanete = new ArrayList<Planete>();
-	private Connexion  con = new Connexion("QAWI","localhost","root","");
+	private Connexion  con = new Connexion("QAWI","localhost","root","root");
 	public ModelLayer(){
 		con.connect();
 	}
@@ -326,13 +326,13 @@ public class ModelLayer {
 	 */
 	public void attaquerJoueur(Flotte fl_att,Flotte fl_def,Planete pl_attaquant,Planete pl_defenseur) throws IOException{
 		if(fl_att.getValAttaque() > fl_def.getValDefense()){
-			System.out.println("L'Attaquant à gagner");
+			System.out.println("L'Attaquant a gagner");
 			generationRapport(2);
 		}else if(fl_att.getValAttaque() == fl_def.getValDefense()){
-			System.out.println("Les deux flottent ont été détruit, aucun gagnant.");
+			System.out.println("Les deux flottent ont ete detruit, aucun gagnant.");
 			generationRapport(1);
 		}else{
-			System.out.println("Le défenseur à anéanti la flotte attaquante.");
+			System.out.println("Le defenseur a aneanti la flotte attaquante.");
 			generationRapport(0);
 		}
 	}
@@ -361,8 +361,8 @@ public class ModelLayer {
 				message.setSubject("Qawi - Rapport de Combat");
 				 DataSource fds = new FileDataSource("images\\Background.jpg");
 				message.setDataHandler(new DataHandler(fds));
-				message.setContent("<h2><b>Salut combattant des étoiles <br /><br />"
-					+ " <p style='color:red;'>La flotte attaquante à échouer !</p></b></h2>"
+				message.setContent("<h2><b>Salut combattant des ï¿½toiles <br /><br />"
+					+ " <p style='color:red;'>La flotte attaquante ï¿½ ï¿½chouer !</p></b></h2>"
 					+ "<img height='500' width='500' src=\"http://nsa34.casimages.com/img/2014/06/23/140623010637705974.jpg\">", 
            "text/html");
 	 
@@ -380,8 +380,8 @@ public class ModelLayer {
 				message.setRecipients(Message.RecipientType.TO,
 					InternetAddress.parse("klarman.ivan@gmail.com"));
 				message.setSubject("Qawi - Rapport de Combat");
-				message.setText("Salut combattant des étoiles"
-					+ "\n\n La flotte attaquante et défensive sont égales, aucun des deux joueurs n'est gagnant !");
+				message.setText("Salut combattant des ï¿½toiles"
+					+ "\n\n La flotte attaquante et dï¿½fensive sont ï¿½gales, aucun des deux joueurs n'est gagnant !");
 	 
 				Transport.send(message);
 	 
@@ -397,8 +397,8 @@ public class ModelLayer {
 				message.setRecipients(Message.RecipientType.TO,
 					InternetAddress.parse("klarman.ivan@gmail.com"));
 				message.setSubject("Qawi - Rapport de Combat");
-				message.setText("Salut combattant des étoiles"
-					+ "\n\n La bataille a été remporté par la flotte attaquante !");
+				message.setText("Salut combattant des etoiles"
+					+ "\n\n La bataille a ete remporte par la flotte attaquante !");
 	 
 				Transport.send(message);
 	 

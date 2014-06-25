@@ -33,7 +33,6 @@ import Model.ModelLayer;
 	        TimerJob timerTask = new TimerJob();
 	        //Met en marche le timer
 	        Timer timer = new Timer(true);
-	        // 10*1000 deuxieme parametre
 	        timer.scheduleAtFixedRate(timerTask, 0, 1000);
 	        System.out.println("TimerTask started");
 	        //cancel after sometime

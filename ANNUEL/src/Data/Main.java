@@ -81,7 +81,7 @@ public class Main {
 		 mod.ameliorerUsine(us);
 		 /**
 		  * Combat de deux flottes avec envoi de rapport
-		  * OK - Gerer les utilisateurs des planètes pour envoyer un mail
+		  * OK - Gerer les utilisateurs des planï¿½tes pour envoyer un mail
 		  */
 		 Flotte att = new Flotte();
 		 Flotte def = new Flotte();
@@ -97,7 +97,6 @@ public class Main {
 			mod.attaquerJoueur(att,  def, p_attaque, p_attaquante);
 		} catch (IOException e) {
 			e.printStackTrace();
-		}
-		 
+		}	 
 	}
 }

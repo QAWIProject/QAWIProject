@@ -3,7 +3,6 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
-
 public class Connexion {
 	/**
 	 * Attributs de Database
@@ -14,7 +13,7 @@ public class Connexion {
 	private String port;
 	private String nameDb;
 	/**
-	 * Constructeur Base de donn�es
+	 * Constructeur Base de donnees
 	 * @param Name Database
 	 * @param Serveur
 	 * @param Port
@@ -29,7 +28,7 @@ public class Connexion {
 		this.port = oPort;
 	}
 	/**
-	 * Deuxi�me Constructeur Base de Donn�es
+	 * Deuxieme Constructeur Base de Donnees
 	 * @param Name Database
 	 * @param Serveur
 	 * @param User
@@ -42,12 +41,12 @@ public class Connexion {
 		this.serveur = oServeur;
 	}
 	/**
-	 * M�thode de chargement du Driver et Connexion Base de donn�es
+	 * Methode de chargement du Driver et Connexion Base de donnees
 	 * @return
 	 */
 	public boolean connect(){
 		try {
-	          Class.forName("com.mysql.jdbc.Driver").newInstance();
+	          Class.forName("com.mysql.jdbc.Driver");
 	          return this.connectDatabase();
 	    } catch (Exception e) {
 	          e.printStackTrace();
