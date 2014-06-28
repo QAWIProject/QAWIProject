@@ -19,56 +19,55 @@ public class Main {
 	// ++++++++++++++++++++++++++++++++++++++++++
 	public static void main(String[] args) {
 		ModelLayer mod = new ModelLayer();
-		List<User> oListUser = new ArrayList<User>();
+/*		List<User> oListUser = new ArrayList<User>();
 		List<Vaisseau> oListVaisseau = new ArrayList<Vaisseau>();
 		List<Usine> oListUsine = new ArrayList<Usine>();
-		/**
+		*//**
 		 * Recuperation Utilisateur dans une liste d'utilisateur 
 		 * Exemples : 
 		 * List<User> maListeUserPrésentEnBDD = mod.getAllUser();
-		 */
+		 *//*
 		oListUser = mod.getAllUser();
-		/**
+		*//**
 		 * Affiche tous les utilisateurs
-		 */
+		 *//*
 		 mod.displayAllUser();
-		/** 
+		*//** 
 		 * Recuperation de tous les Vaisseaux des utilisateurs dans une liste de Vaisseau 
 		 * Exemples : 
 		 * List<Vaisseau> maListeVaisseauDeUserPrésentEnBDD = mod.getAllVaisseau();
-		 */
 		 for(User usr : oListUser){
 			 oListVaisseau = mod.getAllVaisseauByUser(usr);
 		 }
 		 /**
 		  * Affichage de tous les vaisseaux
-		  */
+		  *//*
 		 mod.displayAllVaisseau();
-		/** 
+		*//** 
 		 * Recuperation de toutes les Usines des utilisateurs dans une liste d'usine 
 		 * Exemples : 
 		 * List<Vaisseau> maListeVaisseauDeUserPrésentEnBDD = mod.getAllVaisseau();
-		 */
+		 *//*
 		 for(User usr : oListUser){
 			 oListUsine = mod.getAllUsineByUser(usr);
 		 }
-		 /**
+		 *//**
 		  * Affichage de toutes les usines
-		  */
+		  *//*
 		 mod.displayAllUsine();
-		 /**
+		 *//**
 		  * Insertion d'un vaisseau en fonction de l'utilisateur
 		  * OK
-		  */
+		  *//*
 		 User ivan = new User();
 		 ivan.setIdPlanete("0");
 		 Vaisseau cl = new Vaisseau();
 		 cl.setTypeVaisseau("1");
 		 mod.insertVaisseau(ivan,cl);
-		 /**
+		 *//**
 		  * Ameliorer une usine
 		  * OK
-		  */
+		  *//*
 		 Usine us = new Usine();
 		 us.setId_usine("4");
 		 us.setId_type_usine("3");
@@ -79,10 +78,10 @@ public class Main {
 		 us.setCout_pierre("20");
 		 us.setCout_nourriture("15");
 		 mod.ameliorerUsine(us);
-		 /**
+		 *//**
 		  * Combat de deux flottes avec envoi de rapport
 		  * OK - Gerer les utilisateurs des plan�tes pour envoyer un mail
-		  */
+		  *//*
 		 Flotte att = new Flotte();
 		 Flotte def = new Flotte();
 		 Planete p_attaque = new Planete();
@@ -97,6 +96,19 @@ public class Main {
 			mod.attaquerJoueur(att,  def, p_attaque, p_attaquante);
 		} catch (IOException e) {
 			e.printStackTrace();
-		}	 
+		}
+		User utilIvan = new User();
+		utilIvan.setPseudo("Ivan");
+		utilIvan.setMdp("MDP1992");
+		mod.verifyUser(utilIvan);*/
+		//mod.getAllUsine();
+		mod.addRessourcesAllUsine();
+		//Planete p1 = new Planete();
+		//p1.setId_util("0");
+		//List<Usine> lu = new ArrayList<Usine>();
+		//lu = mod.getAllUsineByPlanete(p1);
+		//for(Usine u : lu){
+			//System.out.println(u.getId_usine());
+		//}
 	}
 }

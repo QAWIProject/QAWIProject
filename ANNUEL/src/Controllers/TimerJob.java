@@ -21,7 +21,6 @@ import Model.ModelLayer;
 	        try {
 	        	Connexion con = new Connexion("QAWI","Localhost","root","root");
 	            // Definit 20 secondes d'attentes pour que la tache se termine
-	        	//SelectData select = new SelectData(con.getConnection(),"SELECT * FROM utilisateur");
 	        	ModelLayer mod = new ModelLayer();
 	        	mod.addRessourcesAllUsine();
 	            Thread.sleep(60000);
@@ -36,13 +35,13 @@ import Model.ModelLayer;
 	        timer.scheduleAtFixedRate(timerTask, 0, 1000);
 	        System.out.println("TimerTask started");
 	        //cancel after sometime
-	        try {
-	            Thread.sleep(120000);
-	        } catch (InterruptedException e) {
-	            e.printStackTrace();
-	        }
+	        //try {
+	        //    Thread.sleep(120000);
+	        //} catch (InterruptedException e) {
+	        //    e.printStackTrace();
+	       //}
 	        //timer.cancel();
-	        System.out.println("TimerTask cancelled");
+	        //System.out.println("TimerTask cancelled");
 	        try {
 	            Thread.sleep(30000);
 	        } catch (InterruptedException e) {

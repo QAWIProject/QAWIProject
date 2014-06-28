@@ -10,7 +10,7 @@ public class Usine {
 	private String cout_argent;
 	private String cout_pierre;
 	private String cout_nourriture;
-	
+	private String id_planete_usine;
 	public Usine(){
 		
 	}
@@ -85,5 +85,13 @@ public class Usine {
 
 	public void setCout_nourriture(String cout_nourriture) {
 		this.cout_nourriture = cout_nourriture;
+	}
+
+	public String getId_planete_usine() {
+		return id_planete_usine;
+	}
+
+	public void setId_planete_usine(String id_planete_usine) {
+		this.id_planete_usine = id_planete_usine;
 	}
 }

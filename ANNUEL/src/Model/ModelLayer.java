@@ -10,12 +10,9 @@ import java.util.Properties;
 import javax.activation.DataHandler;
 import javax.activation.DataSource;
 import javax.activation.FileDataSource;
-import javax.imageio.ImageIO;
 import javax.mail.*;
-import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
-import javax.swing.ImageIcon;
 
 import BD.Connexion;
 import BD.InsertData;
@@ -35,6 +32,42 @@ public class ModelLayer {
 	private Connexion  con = new Connexion("QAWI","localhost","root","root");
 	public ModelLayer(){
 		con.connect();
+	}
+	public boolean verifyUser(User u){
+		try {
+			System.out.println("Entrer dans verifyUser \n "+u.getPseudo()+"\n "+u.getMdp());
+			SelectData select = new SelectData(con.getConnection(),""
+					+ "SELECT * "
+					+ "FROM utilisateur "
+					+ "WHERE nom_util = '"+ u.getPseudo() +"' "
+					+ "AND mdp_util = '"+ u.getMdp() +"' ");
+			ResultSet res = select.getResults();
+			res.first();
+			try{
+				u.setId(Integer.toString(res.getInt("id_util")));
+				u.setEmail(res.getString("email_util"));
+				u.setIdPlanete(Integer.toString(res.getInt("id_planete")));
+			}catch(Exception e){
+				e.printStackTrace();
+			}
+			//System.out.println(" User ID : "+u.getId() +" User Name : "+u.getPseudo());
+			if(res.first() == false){
+				System.out.println("Entrer dans le premier if");
+				return false;
+			}else{
+				return true;
+			}
+		}catch(Exception e){
+			System.out.println("Entrer dans le premier catch");
+			return false;
+		}finally{
+			try{
+			con.getConnection().close();
+		
+			}catch(Exception e){
+				e.printStackTrace();
+			}
+		}
 	}
 	public String getTypeVaisseau(){
 		/**
@@ -56,11 +89,10 @@ public class ModelLayer {
 	public List<User> getAllUser(){
 		try {
 		SelectData select = new SelectData(con.getConnection(),""
-				+ "SELECT *"
+				+ "SELECT * "
 				+ "FROM utilisateur");
 		ResultSet res = select.getResults();
 				if(res.first() !=  false){
-					
 					do{
 						User currentUser = new User();
 						currentUser.setId(Integer.toString(res.getInt("id_util")));
@@ -75,7 +107,14 @@ public class ModelLayer {
 			}catch (SQLException e) {
 				System.out.println("ERROR");
 				e.printStackTrace();
-			}
+			}finally{
+				try{
+					con.getConnection().close();
+				
+					}catch(Exception e){
+						e.printStackTrace();
+					}
+				}
 		return oListUser;
 	}
 	/**
@@ -93,6 +132,7 @@ public class ModelLayer {
 						Usine currentUsine = new Usine();
 						currentUsine.setId_type_usine(Integer.toString(res.getInt("id_type_usine")));
 						currentUsine.setId_usine(Integer.toString(res.getInt("id_usine")));
+						currentUsine.setId_planete_usine(Integer.toString(res.getInt("id_planete")));
 						currentUsine.setNiveau(Integer.toString(res.getInt("niveau_usine")));
 						currentUsine.setProd_usine(Integer.toString(res.getInt("prod_usine")));
 						currentUsine.setCout_or(Integer.toString(res.getInt("cout_or")));
@@ -105,7 +145,54 @@ public class ModelLayer {
 			}catch (SQLException e) {
 				System.out.println("ERROR");
 				e.printStackTrace();
-			}
+			}finally{
+				try{
+					con.getConnection().close();
+				
+					}catch(Exception e){
+						e.printStackTrace();
+					}
+				}
+		return oListUsine;
+	}
+	/**
+	 * Recupere toutes les usines en BDD
+	 * @return liste des Usines
+	 */
+	public List<Usine> getAllUsineByPlanete(Planete pla){
+		try {
+		SelectData select = new SelectData(con.getConnection(),""
+				+ "SELECT * "
+				+ "FROM usine,planete "
+				+ "WHERE usine.id_planete = planete.id_planete "
+				+ "AND planete.id_planete = '"+pla.getId_planete()+"'");
+		ResultSet res = select.getResults();
+				if(res.first() !=  false){
+					do{
+						Usine currentUsine = new Usine();
+						currentUsine.setId_type_usine(Integer.toString(res.getInt("id_type_usine")));
+						currentUsine.setId_usine(Integer.toString(res.getInt("id_usine")));
+						currentUsine.setId_planete_usine(Integer.toString(res.getInt("id_planete")));
+						currentUsine.setNiveau(Integer.toString(res.getInt("niveau_usine")));
+						currentUsine.setProd_usine(Integer.toString(res.getInt("prod_usine")));
+						currentUsine.setCout_or(Integer.toString(res.getInt("cout_or")));
+						currentUsine.setCout_argent(Integer.toString(res.getInt("cout_argent")));
+						currentUsine.setCout_pierre(Integer.toString(res.getInt("cout_pierre")));
+						currentUsine.setCout_nourriture(Integer.toString(res.getInt("cout_nourriture")));
+						oListUsine.add(currentUsine);
+					}while(res.next());
+				}
+			}catch (SQLException e) {
+				System.out.println("ERROR");
+				e.printStackTrace();
+			}finally{
+				try{
+					con.getConnection().close();
+				
+					}catch(Exception e){
+						e.printStackTrace();
+					}
+				}
 		return oListUsine;
 	}
 	/**
@@ -115,14 +202,13 @@ public class ModelLayer {
 	public List<Planete> getAllPlanete(){
 		try {
 		SelectData select = new SelectData(con.getConnection(),""
-				+ "SELECT *"
-				+ "FROM planete");
+				+ "SELECT * "
+				+ "FROM planete ");
 		ResultSet res = select.getResults();
 				if(res.first() !=  false){
 					do{
 						Planete currentPlanete = new Planete();
 						currentPlanete.setId_planete(Integer.toString(res.getInt("id_planete")));
-						currentPlanete.setId_util(Integer.toString(res.getInt("id_util")));
 						currentPlanete.setQte_or(res.getInt("qte_or"));
 						currentPlanete.setQte_argent(res.getInt("qte_argent"));
 						currentPlanete.setQte_pierre(res.getInt("qte_pierre"));
@@ -134,8 +220,51 @@ public class ModelLayer {
 			}catch (SQLException e) {
 				System.out.println("ERROR");
 				e.printStackTrace();
-			}
+			}finally{
+				try{
+					con.getConnection().close();
+				
+					}catch(Exception e){
+						e.printStackTrace();
+					}
+				}
 		return oListPlanete;
+	}
+	/**
+	 * Recupere la planete d'un utilisateur
+	 * @return liste des planetes
+	 */
+	public Planete getAllPlaneteByUser(User u){
+		try {
+			SelectData select = new SelectData(con.getConnection(),""
+				+ "SELECT * "
+				+ "FROM planete "
+				+ "WHERE planete.id_planete = "+u.getIdPlanete());
+			ResultSet res = select.getResults();
+				if(res.first() !=  false){
+					do{
+						Planete currentPlanete = new Planete();
+						currentPlanete.setId_planete(Integer.toString(res.getInt("id_planete")));
+						currentPlanete.setQte_or(res.getInt("qte_or"));
+						currentPlanete.setQte_argent(res.getInt("qte_argent"));
+						currentPlanete.setQte_pierre(res.getInt("qte_pierre"));
+						currentPlanete.setQte_nourriture(res.getInt("qte_nourriture"));
+						currentPlanete.setNom_planete(res.getString("nom_planete"));
+						oListPlanete.add(currentPlanete);
+					}while(res.next());
+				}
+			}catch (SQLException e) {
+				System.out.println("ERROR");
+				e.printStackTrace();
+			}finally{
+				try{
+					con.getConnection().close();
+				
+					}catch(Exception e){
+						e.printStackTrace();
+					}
+				}
+		return oListPlanete.get(0);
 	}
 	/**
 	 * Montre les utilisateurs
@@ -177,7 +306,14 @@ public class ModelLayer {
 			}catch (SQLException e) {
 				System.out.println("ERROR");
 				e.printStackTrace();
-			}
+			}finally{
+				try{
+					con.getConnection().close();
+				
+					}catch(Exception e){
+						e.printStackTrace();
+					}
+				}
 		return oListVaisseau;
 	}
 	/**
@@ -203,7 +339,7 @@ public class ModelLayer {
 				+ "FROM usine,type_usine,planete,utilisateur "
 				+ "WHERE type_usine.id_type_usine = usine.id_type_usine "
 				+ "AND planete.id_planete = usine.id_planete "
-				+ "AND planete.id_util = utilisateur.id_util "
+				+ "AND planete.id_planete = utilisateur.id_planete "
 				+ "AND utilisateur.id_util = "+usr.getId()+" ");
 		ResultSet res = select.getResults();
 				if(res.first() !=  false){
@@ -225,7 +361,14 @@ public class ModelLayer {
 			}catch (SQLException e) {
 				System.out.println("ERROR");
 				e.printStackTrace();
-			}
+			}finally{
+				try{
+					con.getConnection().close();
+				
+					}catch(Exception e){
+						e.printStackTrace();
+					}
+				}
 		return oListUsine;
 	}
 	/**
@@ -259,44 +402,59 @@ public class ModelLayer {
 	 * PRODUCTION DES RESSOURCES DYNAMIQUE
 	 */
 	public void addRessourcesAllUsine(){
-		List<Usine> listeUsines = new ArrayList<Usine>();
-		List<Planete> listePlanetes = new ArrayList<Planete>();
-		listeUsines = getAllUsine();
-		listePlanetes = getAllPlanete();
-		for(Planete pl : listePlanetes){
-			for (Usine farm : listeUsines){
-				switch(farm.getId_type_usine()){
-					case "0" :	// AJOUT DE L'OR
-								UpdateData updOr = new UpdateData(con.getConnection(),
-								" UPDATE planete JOIN usine ON planete.id_planete = usine.id_planete "
-								+"SET planete.qte_or = "+pl.getQte_or()+" + "+farm.getProd_usine()+" "
-								+"WHERE usine.id_planete = planete.id_planete "
-								+"AND usine.id_type_usine = 0 ");
-								break;
-								
-					case "1" : //AJOUT DE L'ARGENT
-								UpdateData updArgent = new UpdateData(con.getConnection(),
-								" UPDATE planete JOIN usine ON planete.id_planete = usine.id_planete "
-								+"SET planete.qte_argent = "+pl.getQte_argent()+" + "+farm.getProd_usine()+" "
-								+"WHERE usine.id_planete = planete.id_planete "
-								+"AND usine.id_type_usine = 1 ");
-								break;
-					case "2" : 	//AJOUT DE LA PIERRE
-								UpdateData updPierre = new UpdateData(con.getConnection(),
-								" UPDATE planete JOIN usine ON planete.id_planete = usine.id_planete "
-								+"SET planete.qte_pierre = "+pl.getQte_pierre()+" + "+farm.getProd_usine()+" "
-								+"WHERE usine.id_planete = planete.id_planete "
-								+"AND usine.id_type_usine = 2 ");
-								break;
-					case "3" :  //AJOUT DE LA NOURRITURE
-								UpdateData updNourriture = new UpdateData(con.getConnection(),
-								" UPDATE planete JOIN usine ON planete.id_planete = usine.id_planete "
-								+"SET planete.qte_nourriture = "+pl.getQte_nourriture()+" + "+farm.getProd_usine()+" "
-								+"WHERE usine.id_planete = planete.id_planete "
-								+"AND usine.id_type_usine = 3 ");
-								break;
-				}			
-			}
+		try{
+			List<Usine> listeUsines = new ArrayList<Usine>();
+			List<Planete> listePlanetes = new ArrayList<Planete>();
+			
+			listePlanetes = getAllPlanete();
+				for(Planete pl : listePlanetes){
+					listeUsines = getAllUsineByPlanete(pl);
+					for(Usine farm : listeUsines){
+						switch(farm.getId_type_usine()){
+							case "0" :	{
+											// AJOUT DE L'OR
+											UpdateData updOr = new UpdateData(con.getConnection(),
+											"UPDATE planete JOIN usine ON planete.id_planete = usine.id_planete "
+											+"SET planete.qte_or = "+pl.getQte_or()+" + "+farm.getProd_usine()+" "
+											+"WHERE planete.id_planete = usine.id_planete "
+											+"AND usine.id_planete = '"+pl.getId_planete()+"'");
+											break;
+										}
+										
+							case "1" : {
+											//AJOUT DE L'ARGENT
+											UpdateData updArgent = new UpdateData(con.getConnection(),
+											" UPDATE planete JOIN usine ON planete.id_planete = usine.id_planete "
+											+"SET planete.qte_argent = "+pl.getQte_argent()+" + "+farm.getProd_usine()+" "
+											+"WHERE planete.id_planete = usine.id_planete "
+											+"AND usine.id_planete = '"+pl.getId_planete()+"'");
+											break;
+										}
+										
+										
+							case "2" : 	{	//AJOUT DE LA PIERRE
+											UpdateData updPierre = new UpdateData(con.getConnection(),
+											"UPDATE planete JOIN usine ON planete.id_planete = usine.id_planete "
+											+"SET planete.qte_pierre = "+pl.getQte_pierre()+" + "+farm.getProd_usine()+" "
+											+"WHERE planete.id_planete = usine.id_planete "
+											+"AND usine.id_planete = '"+pl.getId_planete()+"'");
+											break;
+							}
+										
+							case "3" :  {	//AJOUT DE LA NOURRITURE
+											UpdateData updNourriture = new UpdateData(con.getConnection(),
+											"UPDATE planete JOIN usine ON planete.id_planete = usine.id_planete "
+											+"SET planete.qte_nourriture = "+pl.getQte_nourriture()+" + "+farm.getProd_usine()+" "
+											+"WHERE planete.id_planete = usine.id_planete "
+											+"AND usine.id_planete = '"+pl.getId_planete()+"'");
+											break;
+							}
+							default: break;
+						}
+					}
+				}
+		}catch(Exception e ){
+			e.printStackTrace();
 		}
 	}
 	/**
