@@ -102,7 +102,14 @@ public class Main {
 		utilIvan.setMdp("MDP1992");
 		mod.verifyUser(utilIvan);*/
 		//mod.getAllUsine();
-		mod.addRessourcesAllUsine();
+//		User ivan = new User();
+//		ivan.setId("0");
+//		ivan.setIdPlanete("0");
+//		ivan.setMdp("MDP1992");
+//		ivan.setPseudo("Ivan");
+//		mod.addRessourcesAllUsine();
+//		System.out.println(mod.getAllPlaneteByUser(ivan).getQte_or());
+		mod.getAllPlanete();
 		//Planete p1 = new Planete();
 		//p1.setId_util("0");
 		//List<Usine> lu = new ArrayList<Usine>();

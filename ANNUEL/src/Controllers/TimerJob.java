@@ -32,14 +32,14 @@ import Model.ModelLayer;
 	        TimerJob timerTask = new TimerJob();
 	        //Met en marche le timer
 	        Timer timer = new Timer(true);
-	        timer.scheduleAtFixedRate(timerTask, 0, 1000);
+	        timer.scheduleAtFixedRate(timerTask, 0, 10000);
 	        System.out.println("TimerTask started");
 	        //cancel after sometime
-	        //try {
-	        //    Thread.sleep(120000);
-	        //} catch (InterruptedException e) {
-	        //    e.printStackTrace();
-	       //}
+	        try {
+	            Thread.sleep(120000);
+	        } catch (InterruptedException e) {
+	            e.printStackTrace();
+	       }
 	        //timer.cancel();
 	        //System.out.println("TimerTask cancelled");
 	        try {

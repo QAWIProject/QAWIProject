@@ -12,6 +12,7 @@ public class Connexion {
 	private String serveur;
 	private String port;
 	private String nameDb;
+	private Connection con;
 	/**
 	 * Constructeur Base de donnees
 	 * @param Name Database
@@ -46,7 +47,7 @@ public class Connexion {
 	 */
 	public boolean connect(){
 		try {
-	          Class.forName("com.mysql.jdbc.Driver");
+	          Class.forName("com.mysql.jdbc.Driver").newInstance();
 	          return this.connectDatabase();
 	    } catch (Exception e) {
 	          e.printStackTrace();
@@ -57,11 +58,11 @@ public class Connexion {
 		try {
 			if(this.port == ""){
 				 String DBurl = "jdbc:mysql://"+this.serveur+"/"+this.nameDb;
-				 Connection con = DriverManager.getConnection(DBurl,this.user,this.password);
+				 con = DriverManager.getConnection(DBurl,this.user,this.password);
                  Statement stmt = con.createStatement();
 			}else{
 				String DBurl = "jdbc:mysql://"+this.serveur+":"+this.port+"/"+this.nameDb;
-				 Connection con = DriverManager.getConnection(DBurl,this.user,this.password);
+				con = DriverManager.getConnection(DBurl,this.user,this.password);
 			     Statement stmt = con.createStatement();
 			}
 	        return true;
@@ -71,7 +72,6 @@ public class Connexion {
 	}
 	public Connection getConnection(){
 		 String DBurl = "jdbc:mysql://"+this.serveur+"/"+this.nameDb;
-		 Connection con;
 		try {
 			con = DriverManager.getConnection(DBurl,this.user,this.password);
                         //System.out.println("Connexion reussie.");

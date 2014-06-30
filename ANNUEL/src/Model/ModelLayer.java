@@ -1,8 +1,11 @@
 package Model;
 
 import java.io.IOException;
+import java.sql.Connection;
 import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
@@ -29,19 +32,35 @@ public class ModelLayer {
 	private List<Vaisseau> oListVaisseau = new ArrayList<Vaisseau>();
 	private List<Usine> oListUsine = new ArrayList<Usine>();
 	private List<Planete> oListPlanete = new ArrayList<Planete>();
-	private Connexion  con = new Connexion("QAWI","localhost","root","root");
+	private Connexion con = new Connexion("QAWI","localhost","root","root");
+	private ResultSet res;
+	private Statement st;
+	private ResultSetMetaData rsmd;
 	public ModelLayer(){
 		con.connect();
 	}
+	public void reConnexion(){
+		try {
+			this.con.getConnection().close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		this.con = new Connexion("QAWI","localhost","root","root");
+		this.con.connect();
+	}
 	public boolean verifyUser(User u){
 		try {
-			System.out.println("Entrer dans verifyUser \n "+u.getPseudo()+"\n "+u.getMdp());
-			SelectData select = new SelectData(con.getConnection(),""
+			//System.out.println("Entrer dans verifyUser \n "+u.getPseudo()+"\n "+u.getMdp());
+			String req = ""
 					+ "SELECT * "
 					+ "FROM utilisateur "
 					+ "WHERE nom_util = '"+ u.getPseudo() +"' "
-					+ "AND mdp_util = '"+ u.getMdp() +"' ");
-			ResultSet res = select.getResults();
+					+ "AND mdp_util = '"+ u.getMdp() +"' ";
+			ResultSet res = null;
+			Statement st = con.getConnection().createStatement();
+			res = st.executeQuery(req);
+			ResultSetMetaData rsmd = res.getMetaData();
 			res.first();
 			try{
 				u.setId(Integer.toString(res.getInt("id_util")));
@@ -50,37 +69,16 @@ public class ModelLayer {
 			}catch(Exception e){
 				e.printStackTrace();
 			}
-			//System.out.println(" User ID : "+u.getId() +" User Name : "+u.getPseudo());
 			if(res.first() == false){
-				System.out.println("Entrer dans le premier if");
+				//System.out.println("Entrer dans le premier if");
 				return false;
 			}else{
 				return true;
 			}
 		}catch(Exception e){
-			System.out.println("Entrer dans le premier catch");
+			//System.out.println("Entrer dans le premier catch");
 			return false;
-		}finally{
-			try{
-			con.getConnection().close();
-		
-			}catch(Exception e){
-				e.printStackTrace();
-			}
 		}
-	}
-	public String getTypeVaisseau(){
-		/**
-		 * 1/ Se connecter a la base	
-		 * 2/ Recuperer un type de vaisseau
-		 * 3/ Envoyer un type de vaisseau grace a la classe Vaisseau
-		 */
-		SelectData select = new SelectData(con.getConnection(),""
-				+ "SELECT nom_type_vaisseau"
-				+ "FROM vaisseau , type_vaisseau, planete "
-				+ "WHERE planete.id_planete = vaisseau.id_planete ");
-		System.out.println("Recuperer le type de vaisseau en fonction de la personne : "+ select.getResultatReqString());
-		return select.getResultatReqString();
 	}
 	/**
 	 * Recupere tous les utilisateurs en BDD
@@ -88,10 +86,14 @@ public class ModelLayer {
 	 */
 	public List<User> getAllUser(){
 		try {
-		SelectData select = new SelectData(con.getConnection(),""
+			String req = ""
 				+ "SELECT * "
-				+ "FROM utilisateur");
-		ResultSet res = select.getResults();
+				+ "FROM utilisateur";
+			ResultSet res = null;
+			Statement st = con.getConnection().createStatement();
+			res = st.executeQuery(req);
+			res.refreshRow();
+			ResultSetMetaData rsmd = res.getMetaData();
 				if(res.first() !=  false){
 					do{
 						User currentUser = new User();
@@ -104,17 +106,11 @@ public class ModelLayer {
 						oListUser.add(currentUser);
 					}while(res.next());
 				}
+				st.close();
 			}catch (SQLException e) {
 				System.out.println("ERROR");
 				e.printStackTrace();
-			}finally{
-				try{
-					con.getConnection().close();
-				
-					}catch(Exception e){
-						e.printStackTrace();
-					}
-				}
+			}
 		return oListUser;
 	}
 	/**
@@ -123,10 +119,13 @@ public class ModelLayer {
 	 */
 	public List<Usine> getAllUsine(){
 		try {
-		SelectData select = new SelectData(con.getConnection(),""
+		String req = ""
 				+ "SELECT *"
-				+ "FROM usine");
-		ResultSet res = select.getResults();
+				+ "FROM usine";
+		
+		Statement st = con.getConnection().createStatement();
+		res = st.executeQuery(req);
+		ResultSetMetaData rsmd = res.getMetaData();
 				if(res.first() !=  false){
 					do{
 						Usine currentUsine = new Usine();
@@ -142,17 +141,11 @@ public class ModelLayer {
 						oListUsine.add(currentUsine);
 					}while(res.next());
 				}
+				st.close();
 			}catch (SQLException e) {
 				System.out.println("ERROR");
 				e.printStackTrace();
-			}finally{
-				try{
-					con.getConnection().close();
-				
-					}catch(Exception e){
-						e.printStackTrace();
-					}
-				}
+			}
 		return oListUsine;
 	}
 	/**
@@ -161,12 +154,15 @@ public class ModelLayer {
 	 */
 	public List<Usine> getAllUsineByPlanete(Planete pla){
 		try {
-		SelectData select = new SelectData(con.getConnection(),""
+			String req = ""
 				+ "SELECT * "
 				+ "FROM usine,planete "
 				+ "WHERE usine.id_planete = planete.id_planete "
-				+ "AND planete.id_planete = '"+pla.getId_planete()+"'");
-		ResultSet res = select.getResults();
+				+ "AND planete.id_planete = '"+pla.getId_planete()+"'";
+				
+				st = con.getConnection().createStatement();
+				res = st.executeQuery(req);
+				rsmd = res.getMetaData();
 				if(res.first() !=  false){
 					do{
 						Usine currentUsine = new Usine();
@@ -182,17 +178,10 @@ public class ModelLayer {
 						oListUsine.add(currentUsine);
 					}while(res.next());
 				}
-			}catch (SQLException e) {
+			}catch (SQLException e){
 				System.out.println("ERROR");
 				e.printStackTrace();
-			}finally{
-				try{
-					con.getConnection().close();
-				
-					}catch(Exception e){
-						e.printStackTrace();
-					}
-				}
+			}
 		return oListUsine;
 	}
 	/**
@@ -201,10 +190,12 @@ public class ModelLayer {
 	 */
 	public List<Planete> getAllPlanete(){
 		try {
-		SelectData select = new SelectData(con.getConnection(),""
-				+ "SELECT * "
-				+ "FROM planete ");
-		ResultSet res = select.getResults();
+			
+			String req = "SELECT * FROM planete ";
+			ResultSet res = null;
+			Statement st = con.getConnection().createStatement();
+			res = st.executeQuery(req);
+			ResultSetMetaData rsmd = res.getMetaData();
 				if(res.first() !=  false){
 					do{
 						Planete currentPlanete = new Planete();
@@ -217,17 +208,11 @@ public class ModelLayer {
 						oListPlanete.add(currentPlanete);
 					}while(res.next());
 				}
+				st.close();
 			}catch (SQLException e) {
 				System.out.println("ERROR");
 				e.printStackTrace();
-			}finally{
-				try{
-					con.getConnection().close();
-				
-					}catch(Exception e){
-						e.printStackTrace();
-					}
-				}
+			}
 		return oListPlanete;
 	}
 	/**
@@ -235,15 +220,18 @@ public class ModelLayer {
 	 * @return liste des planetes
 	 */
 	public Planete getAllPlaneteByUser(User u){
+		Planete currentPlanete = new Planete();
 		try {
-			SelectData select = new SelectData(con.getConnection(),""
+			String req = ""
 				+ "SELECT * "
 				+ "FROM planete "
-				+ "WHERE planete.id_planete = "+u.getIdPlanete());
-			ResultSet res = select.getResults();
+				+ "WHERE planete.id_planete = "+u.getIdPlanete();
+			st = con.getConnection().createStatement();
+			res = st.executeQuery(req);
+			rsmd = res.getMetaData();
+			
 				if(res.first() !=  false){
 					do{
-						Planete currentPlanete = new Planete();
 						currentPlanete.setId_planete(Integer.toString(res.getInt("id_planete")));
 						currentPlanete.setQte_or(res.getInt("qte_or"));
 						currentPlanete.setQte_argent(res.getInt("qte_argent"));
@@ -251,20 +239,14 @@ public class ModelLayer {
 						currentPlanete.setQte_nourriture(res.getInt("qte_nourriture"));
 						currentPlanete.setNom_planete(res.getString("nom_planete"));
 						oListPlanete.add(currentPlanete);
+						//System.out.println("PLANETE "+currentPlanete.getNom_planete()+"\n Qte OR "+currentPlanete.getQte_or());
 					}while(res.next());
 				}
 			}catch (SQLException e) {
 				System.out.println("ERROR");
 				e.printStackTrace();
-			}finally{
-				try{
-					con.getConnection().close();
-				
-					}catch(Exception e){
-						e.printStackTrace();
-					}
-				}
-		return oListPlanete.get(0);
+			}
+		return currentPlanete;
 	}
 	/**
 	 * Montre les utilisateurs
@@ -287,13 +269,16 @@ public class ModelLayer {
 	 */
 	public List<Vaisseau> getAllVaisseauByUser(User oUser){
 		try {
-		SelectData select = new SelectData(con.getConnection(),""
+			String req = ""
 				+ "SELECT vaisseau.id_vaisseau,type_vaisseau.nom_type_vaisseau,vaisseau.id_type_vaisseau "
 				+ "FROM vaisseau,type_vaisseau,planete,utilisateur "
 				+ "WHERE vaisseau.id_type_vaisseau = type_vaisseau.id_type_vaisseau "
 				+ "AND planete.id_planete = utilisateur.id_planete "
-				+ "AND utilisateur.id_util = 0 ");
-		ResultSet res = select.getResults();
+				+ "AND utilisateur.id_util = 0 ";
+			ResultSet res = null;
+			Statement st = con.getConnection().createStatement();
+			res = st.executeQuery(req);
+			ResultSetMetaData rsmd = res.getMetaData();
 				if(res.first() !=  false){
 					do{
 						Vaisseau currentVaisseau = new Vaisseau();
@@ -303,17 +288,11 @@ public class ModelLayer {
 						oListVaisseau.add(currentVaisseau);
 					}while(res.next());
 				}
+				st.close();
 			}catch (SQLException e) {
 				System.out.println("ERROR");
 				e.printStackTrace();
-			}finally{
-				try{
-					con.getConnection().close();
-				
-					}catch(Exception e){
-						e.printStackTrace();
-					}
-				}
+			}
 		return oListVaisseau;
 	}
 	/**
@@ -334,14 +313,16 @@ public class ModelLayer {
 	 */
 	public List<Usine> getAllUsineByUser(User usr){
 		try {
-		SelectData select = new SelectData(con.getConnection(),""
+			String req = ""
 				+ "SELECT usine.cout_or,cout_argent,cout_pierre,cout_nourriture,usine.id_usine,usine.id_type_usine,type_usine.nom_type_usine,usine.prod_usine,usine.niveau_usine "
 				+ "FROM usine,type_usine,planete,utilisateur "
 				+ "WHERE type_usine.id_type_usine = usine.id_type_usine "
 				+ "AND planete.id_planete = usine.id_planete "
 				+ "AND planete.id_planete = utilisateur.id_planete "
-				+ "AND utilisateur.id_util = "+usr.getId()+" ");
-		ResultSet res = select.getResults();
+				+ "AND utilisateur.id_util = "+usr.getId()+" ";
+			st = con.getConnection().createStatement();
+			res = st.executeQuery(req);
+			rsmd = res.getMetaData();
 				if(res.first() !=  false){
 					do{
 						Usine currentUsine = new Usine();
@@ -357,18 +338,12 @@ public class ModelLayer {
 						oListUsine.add(currentUsine);
 					}while(res.next());
 				}
+				st.close();
 				return oListUsine;
 			}catch (SQLException e) {
 				System.out.println("ERROR");
 				e.printStackTrace();
-			}finally{
-				try{
-					con.getConnection().close();
-				
-					}catch(Exception e){
-						e.printStackTrace();
-					}
-				}
+			}
 		return oListUsine;
 	}
 	/**
@@ -405,7 +380,6 @@ public class ModelLayer {
 		try{
 			List<Usine> listeUsines = new ArrayList<Usine>();
 			List<Planete> listePlanetes = new ArrayList<Planete>();
-			
 			listePlanetes = getAllPlanete();
 				for(Planete pl : listePlanetes){
 					listeUsines = getAllUsineByPlanete(pl);
@@ -420,7 +394,6 @@ public class ModelLayer {
 											+"AND usine.id_planete = '"+pl.getId_planete()+"'");
 											break;
 										}
-										
 							case "1" : {
 											//AJOUT DE L'ARGENT
 											UpdateData updArgent = new UpdateData(con.getConnection(),
@@ -430,8 +403,6 @@ public class ModelLayer {
 											+"AND usine.id_planete = '"+pl.getId_planete()+"'");
 											break;
 										}
-										
-										
 							case "2" : 	{	//AJOUT DE LA PIERRE
 											UpdateData updPierre = new UpdateData(con.getConnection(),
 											"UPDATE planete JOIN usine ON planete.id_planete = usine.id_planete "
@@ -440,7 +411,6 @@ public class ModelLayer {
 											+"AND usine.id_planete = '"+pl.getId_planete()+"'");
 											break;
 							}
-										
 							case "3" :  {	//AJOUT DE LA NOURRITURE
 											UpdateData updNourriture = new UpdateData(con.getConnection(),
 											"UPDATE planete JOIN usine ON planete.id_planete = usine.id_planete "
@@ -566,6 +536,5 @@ public class ModelLayer {
 				throw new RuntimeException(e);
 			}
 		}
-		
 	}
 }

@@ -7,12 +7,14 @@ import java.sql.Statement;
 
 public class SelectData {
 	private String resultatReq = "";
-	private ResultSet rs = null ;
+	private ResultSet rs;
+	private Statement st;
+	private ResultSetMetaData rsmd;
 	public SelectData(Connection oConnection,String req){
 		try{
-			Statement st = oConnection.createStatement();
+			 st = oConnection.createStatement();
 			rs = st.executeQuery(req);
-			ResultSetMetaData rsmd = rs.getMetaData();
+			rsmd = rs.getMetaData();
 			boolean prochain = rs.next();
 			while (prochain){
 				for (int i = 1; i <= rsmd.getColumnCount(); i++){

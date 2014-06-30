@@ -3,7 +3,6 @@ package View;
 import java.awt.EventQueue;
 import java.awt.image.BufferedImage;
 import java.io.File;
-
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
@@ -14,23 +13,16 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.UIManager;
 import javax.swing.AbstractAction;
-
 import java.awt.event.ActionEvent;
-
 import javax.swing.Action;
-
 import BusinessClass.User;
 import Model.ModelLayer;
 
 public class Connexion extends JFrame {
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
+	//private static final long serialVersionUID = 1L;
 	private JPasswordField txtFieldPassPlayer;
 	private JTextField txtFieldNamePlayer;
 	private final Action action = new ConnexionEvent();
-
 	/**
 	 * Launch the application.
 	 */
@@ -108,7 +100,7 @@ public class Connexion extends JFrame {
 		private static final long serialVersionUID = 1L;
 		public ConnexionEvent() {
 			putValue(NAME, "Connexion");
-			putValue(SHORT_DESCRIPTION, "Some short description");
+			putValue(SHORT_DESCRIPTION, "Description");
 		}
 		@SuppressWarnings("deprecation")
 		public void actionPerformed(ActionEvent e) {
