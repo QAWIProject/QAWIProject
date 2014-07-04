@@ -1,4 +1,4 @@
-package BD;
+package coolplugin.impl;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -18,7 +18,7 @@ public class SelectData {
 			boolean prochain = rs.next();
 			while (prochain){
 				for (int i = 1; i <= rsmd.getColumnCount(); i++){
-					this.resultatReq += rs.getString(i) + "";
+					this.resultatReq += rs.getString(i) + " ";
 				}
 				prochain = rs.next();
 			}

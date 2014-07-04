@@ -1,11 +1,12 @@
 package Controllers;
 
+
 import java.util.Date;
 import java.util.Timer;
 import java.util.TimerTask;
-
 import BD.Connexion;
 import Model.ModelLayer;
+
 	 
 	public class TimerJob extends TimerTask {
 	    @Override

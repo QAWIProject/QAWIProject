@@ -3,6 +3,7 @@ package View;
 import java.awt.EventQueue;
 import java.awt.image.BufferedImage;
 import java.io.File;
+
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
@@ -13,8 +14,14 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.UIManager;
 import javax.swing.AbstractAction;
+
 import java.awt.event.ActionEvent;
+
 import javax.swing.Action;
+
+import net.xeoh.plugins.base.PluginManager;
+import net.xeoh.plugins.base.impl.PluginManagerFactory;
+import coolplugin.CoolPlugin;
 import BusinessClass.User;
 import Model.ModelLayer;
 
@@ -104,14 +111,18 @@ public class Connexion extends JFrame {
 		}
 		@SuppressWarnings("deprecation")
 		public void actionPerformed(ActionEvent e) {
-				ModelLayer mo = new ModelLayer();
+				PluginManager pm = PluginManagerFactory.createPluginManager();
+				pm.addPluginsFrom(new File("plugins/").toURI());
+				CoolPlugin plugin = pm.getPlugin(CoolPlugin.class);
+				System.out.println(plugin);
+				ModelLayer mo = new ModelLayer(plugin);
 				User oUtil = new User();
 				oUtil.setPseudo(txtFieldNamePlayer.getText());
 				oUtil.setMdp(txtFieldPassPlayer.getText());
 				// Test vérification User
 				System.out.println(mo.verifyUser(oUtil));
 				if(mo.verifyUser(oUtil) == true){
-					Principal fenPrincipal = new Principal(oUtil);
+					Principal fenPrincipal = new Principal(oUtil,plugin);
 					setVisible(false);
 				}
 		}

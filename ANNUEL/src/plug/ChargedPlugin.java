@@ -47,15 +47,13 @@ public class ChargedPlugin{
 			this.initializeLoader();
 			
 			Plugin[] tmpPlugins = new Plugin[this.classPlugin.size()];
-			
+
 			for(int index = 0 ; index < tmpPlugins.length; index ++ ){
-				
 				//On creer une nouvelle instance de l'objet contenu dans la liste grace a newInstance() 
 				//et on le cast en StringPlugins. Vu que la classe implemente StringPlugins, le cast est toujours correct
 				tmpPlugins[index] = (Plugin)((Class)this.classPlugin.get(index)).newInstance() ;
 				
 			}
-			
 			return (ChargedPlugin[]) tmpPlugins;
 		}
 		private void initializeLoader() throws Exception{
@@ -120,8 +118,6 @@ public class ChargedPlugin{
 						
 					}
 				}
-				
-			
 			}
 			
 		}

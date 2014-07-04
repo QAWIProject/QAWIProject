@@ -1,8 +1,13 @@
 package Data;
+import java.io.File;
 import java.io.IOException;
+import java.net.MalformedURLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import coolplugin.CoolPlugin;
+import net.xeoh.plugins.base.PluginManager;
+import net.xeoh.plugins.base.impl.PluginManagerFactory;
 import BD.Connexion;
 import BD.SelectData;
 import BD.StartConnexion;
@@ -17,12 +22,17 @@ public class Main {
 	// ++++++++++++++++++++++++++++++++++++++++++
 	// ++++++++++++ VUE et CONTROLEUR +++++++++++
 	// ++++++++++++++++++++++++++++++++++++++++++
-	public static void main(String[] args) {
-		ModelLayer mod = new ModelLayer();
+	public static void main(String[] args) throws MalformedURLException{
+		PluginManager pm = PluginManagerFactory.createPluginManager();
+		pm.addPluginsFrom(new File("plugins/").toURI());
+		CoolPlugin plugin = pm.getPlugin(CoolPlugin.class);
+		//System.out.println(plugin);
+		
+		//ModelLayer mod = new ModelLayer();
 /*		List<User> oListUser = new ArrayList<User>();
 		List<Vaisseau> oListVaisseau = new ArrayList<Vaisseau>();
 		List<Usine> oListUsine = new ArrayList<Usine>();
-		*//**
+*/		/**
 		 * Recuperation Utilisateur dans une liste d'utilisateur 
 		 * Exemples : 
 		 * List<User> maListeUserPrésentEnBDD = mod.getAllUser();
@@ -109,7 +119,7 @@ public class Main {
 //		ivan.setPseudo("Ivan");
 //		mod.addRessourcesAllUsine();
 //		System.out.println(mod.getAllPlaneteByUser(ivan).getQte_or());
-		mod.getAllPlanete();
+		//mod.getAllPlanete();
 		//Planete p1 = new Planete();
 		//p1.setId_util("0");
 		//List<Usine> lu = new ArrayList<Usine>();

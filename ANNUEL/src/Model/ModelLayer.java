@@ -1,7 +1,6 @@
 package Model;
 
 import java.io.IOException;
-import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
@@ -17,9 +16,9 @@ import javax.mail.*;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 
+import coolplugin.CoolPlugin;
 import BD.Connexion;
 import BD.InsertData;
-import BD.SelectData;
 import BD.UpdateData;
 import BusinessClass.Flotte;
 import BusinessClass.Planete;
@@ -36,6 +35,11 @@ public class ModelLayer {
 	private ResultSet res;
 	private Statement st;
 	private ResultSetMetaData rsmd;
+	public CoolPlugin plugin;
+	public ModelLayer(CoolPlugin plu){
+		con.connect();
+		plugin = plu;
+	}
 	public ModelLayer(){
 		con.connect();
 	}
@@ -359,11 +363,74 @@ public class ModelLayer {
 			System.out.println("----------");
 		}
 	}
-	public void insertVaisseau(User oUser,Vaisseau vaiss){
+	public void insertVaisseau(User oUser,List<Vaisseau> list){
 		String table = "vaisseau";
 		String[] field = {"id_vaisseau","id_planete","id_type_vaisseau"};
-		String[] val = {null,oUser.getIdPlanete(),vaiss.getTypeVaisseau()};
-		InsertData ins = new InsertData(con.getConnection(),field,table,val);
+		for(Vaisseau vais : list){
+			String[] val = {null,oUser.getIdPlanete(),vais.getTypeVaisseau()};
+			InsertData ins = new InsertData(con.getConnection(),field,table,val);
+		}
+	}
+	public boolean isPossible(Planete pla,int[] coutTotal){
+		boolean flag = true;
+		if(pla.getQte_or() < coutTotal[0]){
+			flag = false;
+		}
+		if(pla.getQte_argent() < coutTotal[1]){
+			flag = false;
+		}
+		if(pla.getQte_pierre() < coutTotal[2]){
+			flag = false;
+		}
+		if(pla.getQte_nourriture() < coutTotal[3]){
+			flag = false;
+		}
+		return flag;
+	}
+	public int[] getTotalcoutVaisseaux(List<Vaisseau> lVaiss){
+		int coutOrTotal = 0;
+		int coutArgentTotal = 0;
+		int coutPierreTotal = 0;
+		int coutNourritureTotal = 0;
+		for(Vaisseau vs : lVaiss){
+			switch(vs.getTypeVaisseau()){
+				case "0": {
+					coutOrTotal += 20;
+					coutArgentTotal += 10;
+					coutPierreTotal += 10;
+					break;
+				}
+				case "1": {
+					coutOrTotal += 40;
+					coutArgentTotal += 20;
+					coutPierreTotal += 20;
+					break;
+				}
+				case "2": {
+					coutOrTotal += 80;
+					coutArgentTotal += 30;
+					coutPierreTotal += 20;
+					coutNourritureTotal += 20;
+					break;
+				}
+				case "3":{
+					coutOrTotal += 500;
+					coutArgentTotal += 250;
+					coutPierreTotal += 200;
+					coutNourritureTotal += 80;
+					break;
+				}
+				case "4":{
+					coutOrTotal += 1000;
+					coutArgentTotal += 1000;
+					coutPierreTotal += 1200;
+					coutNourritureTotal += 500;
+					break;
+				}
+			}
+		}
+		int[] totalCoutRess = {coutOrTotal,coutArgentTotal,coutPierreTotal,coutNourritureTotal}; 
+		return totalCoutRess;
 	}
 	public void monterNiveauUsine(User oUser,Usine us){
 		int newNiveau = Integer.parseInt(us.getNiveau())+1;
@@ -428,6 +495,19 @@ public class ModelLayer {
 		}
 	}
 	/**
+	 * Achat Vaisseaux
+	 * @param planete
+	 * @param tableau des couts ressources
+	 */
+	public void appliquerAchat(Planete pl,int[] tabCout){
+		UpdateData upd = new UpdateData(con.getConnection(),
+				"UPDATE planete "
+				+"SET qte_or = "+Integer.toString(tabCout[0])+" , qte_argent = "+Integer.toString(tabCout[1])
+				+" , "+" qte_pierre = "+Integer.toString(tabCout[2])+" , "
+				+"qte_nourriture = "+Integer.toString(tabCout[3])+" "
+				+"WHERE id_planete = "+pl.getId_planete()+"");
+	}
+	/**
 	 * Amelioration d'une usine
 	 * @param usine
 	 */
@@ -489,8 +569,8 @@ public class ModelLayer {
 				message.setSubject("Qawi - Rapport de Combat");
 				 DataSource fds = new FileDataSource("images\\Background.jpg");
 				message.setDataHandler(new DataHandler(fds));
-				message.setContent("<h2><b>Salut combattant des �toiles <br /><br />"
-					+ " <p style='color:red;'>La flotte attaquante � �chouer !</p></b></h2>"
+				message.setContent("<h2><b>Salut combattant des etoiles <br /><br />"
+					+ " <p style='color:red;'>La flotte attaquante a echouer !</p></b></h2>"
 					+ "<img height='500' width='500' src=\"http://nsa34.casimages.com/img/2014/06/23/140623010637705974.jpg\">", 
            "text/html");
 	 
@@ -508,8 +588,8 @@ public class ModelLayer {
 				message.setRecipients(Message.RecipientType.TO,
 					InternetAddress.parse("klarman.ivan@gmail.com"));
 				message.setSubject("Qawi - Rapport de Combat");
-				message.setText("Salut combattant des �toiles"
-					+ "\n\n La flotte attaquante et d�fensive sont �gales, aucun des deux joueurs n'est gagnant !");
+				message.setText("Salut combattant des etoiles"
+					+ "\n\n La flotte attaquante et defensive sont egales, aucun des deux joueurs n'est gagnant !");
 	 
 				Transport.send(message);
 	 
