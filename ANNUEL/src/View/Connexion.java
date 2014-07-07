@@ -26,12 +26,11 @@ import BusinessClass.User;
 import Model.ModelLayer;
 
 public class Connexion extends JFrame {
-	//private static final long serialVersionUID = 1L;
 	private JPasswordField txtFieldPassPlayer;
 	private JTextField txtFieldNamePlayer;
 	private final Action action = new ConnexionEvent();
 	/**
-	 * Launch the application.
+	 * Lancement de l'application
 	 */
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
@@ -47,7 +46,7 @@ public class Connexion extends JFrame {
 		});
 	}
 	/**
-	 * Create the frame.
+	 * Création de la JFrame
 	 */
 	public Connexion() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -61,47 +60,14 @@ public class Connexion extends JFrame {
 		}catch(Exception e){
 			e.printStackTrace();
 		}
+		// Configuration Pseudo, mdp et bouton connexion
+		initPseudo();
+		initMdp();
+		initButCon();
+		// Configuration generale JFrame
+		endJFrame();
 		
-		txtFieldPassPlayer = new JPasswordField();
-		txtFieldPassPlayer.setBounds(140, 177, 114, 19);
-		getContentPane().add(txtFieldPassPlayer);
-		txtFieldPassPlayer.setColumns(10);
 		
-		JLabel lblPassword = new JLabel("Mot de Passe");
-		lblPassword.setForeground(UIManager.getColor("MenuBar.highlight"));
-		lblPassword.setBounds(36, 179, 101, 15);
-		getContentPane().add(lblPassword);
-		
-		JLabel lblNomDuJoueur = new JLabel("Nom du joueur");
-		lblNomDuJoueur.setForeground(UIManager.getColor("MenuBar.highlight"));
-		lblNomDuJoueur.setBounds(36, 139, 101, 15);
-		getContentPane().add(lblNomDuJoueur);
-		
-		txtFieldNamePlayer = new JTextField();
-		txtFieldNamePlayer.setBounds(140, 137, 114, 19);
-		getContentPane().add(txtFieldNamePlayer);
-		txtFieldNamePlayer.setColumns(10);
-		
-		JLabel lblQawiGame = new JLabel("QAWI GAME");
-		lblQawiGame.setForeground(UIManager.getColor("MenuBar.highlight"));
-		lblQawiGame.setBounds(114, 0, 87, 53);
-		getContentPane().add(lblQawiGame);
-		
-		JButton btnConnexion = new JButton("Connexion");
-		btnConnexion.setAction(action);
-		btnConnexion.setBounds(95, 245, 106, 25);
-		getContentPane().add(btnConnexion);
-		
-		JPanel panelBackground = new JPanel();
-		panelBackground.setBounds(0, 0, 300, 378);
-		try{
-			BufferedImage myPicture = ImageIO.read(new File("src/extras/bg.jpg"));
-			JLabel picLabel = new JLabel(new ImageIcon(myPicture));
-			panelBackground.add(picLabel);
-		}catch(Exception e){
-			e.printStackTrace();
-		}
-		getContentPane().add(panelBackground);
 	}
 	private class ConnexionEvent extends AbstractAction {
 		private static final long serialVersionUID = 1L;
@@ -126,5 +92,53 @@ public class Connexion extends JFrame {
 					setVisible(false);
 				}
 		}
+	}
+	public void initMdp(){
+		txtFieldPassPlayer = new JPasswordField();
+		txtFieldPassPlayer.setBounds(140, 177, 114, 19);
+		getContentPane().add(txtFieldPassPlayer);
+		txtFieldPassPlayer.setColumns(10);
+		
+		JLabel lblPassword = new JLabel("Mot de Passe");
+		lblPassword.setForeground(UIManager.getColor("MenuBar.highlight"));
+		lblPassword.setBounds(36, 179, 101, 15);
+		getContentPane().add(lblPassword);
+	}
+	
+	public void initPseudo(){
+		JLabel lblNomDuJoueur = new JLabel("Nom du joueur");
+		lblNomDuJoueur.setForeground(UIManager.getColor("MenuBar.highlight"));
+		lblNomDuJoueur.setBounds(36, 139, 101, 15);
+		getContentPane().add(lblNomDuJoueur);
+		
+		txtFieldNamePlayer = new JTextField();
+		txtFieldNamePlayer.setBounds(140, 137, 114, 19);
+		getContentPane().add(txtFieldNamePlayer);
+		txtFieldNamePlayer.setColumns(10);
+	}
+	
+	public void initButCon(){
+		JButton btnConnexion = new JButton("Connexion");
+		btnConnexion.setAction(action);
+		btnConnexion.setBounds(95, 245, 106, 25);
+		getContentPane().add(btnConnexion);
+	}
+	
+	public void endJFrame(){
+		JLabel lblQawiGame = new JLabel("QAWI GAME");
+		lblQawiGame.setForeground(UIManager.getColor("MenuBar.highlight"));
+		lblQawiGame.setBounds(114, 0, 87, 53);
+		getContentPane().add(lblQawiGame);
+		
+		JPanel panelBackground = new JPanel();
+		panelBackground.setBounds(0, 0, 300, 378);
+		try{
+			BufferedImage myPicture = ImageIO.read(new File("src/extras/bg.jpg"));
+			JLabel picLabel = new JLabel(new ImageIcon(myPicture));
+			panelBackground.add(picLabel);
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		getContentPane().add(panelBackground);
 	}
 }

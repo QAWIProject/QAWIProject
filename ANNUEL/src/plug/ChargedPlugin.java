@@ -4,14 +4,21 @@ import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.ArrayList;
 import java.util.Enumeration;
+import java.util.List;
 import java.util.jar.JarFile;
 
 public class ChargedPlugin{
 
 		private String[] files;
 		
-		private ArrayList classPlugin;
-		
+		private List classPlugin;
+		/**
+		 * Recuperer liste de Plugin chargé 
+		 * @return Liste de Plugins
+		 */
+		public List<Plugin> getClassPlugin(){
+			return this.classPlugin;
+		}
 		/**
 		 * Constructeur par defaut
 		 *
