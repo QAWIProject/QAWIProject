@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Client :  localhost:8889
--- Généré le :  Mer 25 Juin 2014 à 11:11
+-- Généré le :  Mer 09 Juillet 2014 à 20:48
 -- Version du serveur :  5.5.34
 -- Version de PHP :  5.5.10
 
@@ -58,14 +58,20 @@ CREATE TABLE `planete` (
   `qte_pierre` bigint(20) DEFAULT NULL,
   `qte_nourriture` bigint(20) DEFAULT NULL,
   PRIMARY KEY (`id_planete`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=13 ;
 
 --
 -- Contenu de la table `planete`
 --
 
 INSERT INTO `planete` (`id_planete`, `nom_planete`, `qte_or`, `qte_argent`, `qte_pierre`, `qte_nourriture`) VALUES
-(0, 'Azeroth', 0, 0, 0, 0);
+(0, 'Azeroth', 134, 155, 870, 200),
+(7, 'Molarine', 2370, 11850, 4740, 16920),
+(8, 'Goldorak', 200, 200, 200, 200),
+(9, 'Kyuto', 200, 200, 200, 200),
+(10, 'AlexPlanete', 200, 200, 200, 200),
+(11, 'Martor', 200, 200, 200, 200),
+(12, 'Martor1992', 200, 200, 200, 200);
 
 -- --------------------------------------------------------
 
@@ -163,17 +169,21 @@ CREATE TABLE `usine` (
   PRIMARY KEY (`id_usine`),
   KEY `FK_usine_id_planete` (`id_planete`),
   KEY `FK_usine_id_type_usine` (`id_type_usine`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=5 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=9 ;
 
 --
 -- Contenu de la table `usine`
 --
 
 INSERT INTO `usine` (`id_usine`, `cout_or`, `cout_argent`, `cout_pierre`, `cout_nourriture`, `prod_usine`, `niveau_usine`, `id_planete`, `id_type_usine`) VALUES
-(1, 0, 0, 0, 0, 10, 1, 0, 0),
-(2, 0, 0, 0, 0, 10, 1, 0, 1),
-(3, 0, 0, 0, 0, 10, 1, 0, 2),
-(4, 20, 30, 40, 30, 400, 2, 0, 3);
+(1, 40, 40, 40, 40, 400, 2, 0, 0),
+(2, 20, 20, 20, 20, 200, 1, 0, 1),
+(3, 20, 20, 20, 20, 200, 1, 0, 2),
+(4, 20, 20, 20, 20, 200, 1, 0, 3),
+(5, 100, 100, 100, 100, 10, 1, 7, 0),
+(6, 100, 100, 200, 200, 50, 1, 7, 1),
+(7, 400, 400, 400, 400, 20, 1, 7, 2),
+(8, 450, 500, 500, 500, 70, 1, 7, 3);
 
 -- --------------------------------------------------------
 
@@ -191,7 +201,7 @@ CREATE TABLE `utilisateur` (
   `id_planete` bigint(20) DEFAULT NULL,
   PRIMARY KEY (`id_util`),
   KEY `FK_utilisateur_id_planete` (`id_planete`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=3 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=9 ;
 
 --
 -- Contenu de la table `utilisateur`
@@ -199,8 +209,14 @@ CREATE TABLE `utilisateur` (
 
 INSERT INTO `utilisateur` (`id_util`, `nom_util`, `email_util`, `mdp_util`, `point_util`, `est_admin_util`, `id_planete`) VALUES
 (0, 'Ivan', 'klarman.ivan@gmail.com', 'MDP1992', 0, 0, 0),
-(1, 'Walson', 'walson.rene@gmail.com', 'toto1992', 0, 0, NULL),
-(2, 'Quentin', 'quentin.esgi@gmail.com', 'chatte1234', 0, 1, NULL);
+(1, 'Walson', 'walson.rene@gmail.com', 'toto1992', 0, 0, 7),
+(2, 'Quentin', 'quentin.esgi@gmail.com', 'chatte1234', 0, 1, NULL),
+(3, 'Admin', 'admin.qawi@gmail.com', 'admin1992', 0, 1, NULL),
+(4, 'Goldorak', 'goldo@gmail.com', 'goldorak', 0, 0, 8),
+(5, 'Kyuto', 'kyuto@yahoo.fr', 'kyuto1992', 0, 0, 9),
+(6, 'Alexandra', 'alex@hotmail.com', 'alexandra', 0, 0, 10),
+(7, 'Mesiane', 'mesiane12@gmail.com', 'mesiane1992', 0, 0, 11),
+(8, 'Mesiane128', 'mesiane123@gmail.com', 'toto1992', 0, 0, 12);
 
 -- --------------------------------------------------------
 
@@ -215,77 +231,25 @@ CREATE TABLE `vaisseau` (
   PRIMARY KEY (`id_vaisseau`),
   KEY `FK_vaisseau_id_planete` (`id_planete`),
   KEY `FK_vaisseau_id_type_vaisseau` (`id_type_vaisseau`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=128 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=155 ;
 
 --
 -- Contenu de la table `vaisseau`
 --
 
 INSERT INTO `vaisseau` (`id_vaisseau`, `id_planete`, `id_type_vaisseau`) VALUES
-(1, 0, 1),
-(2, 0, 2),
-(3, 0, 1),
-(67, 0, 1),
-(68, 0, 1),
-(69, 0, 1),
-(70, 0, 1),
-(71, 0, 1),
-(72, 0, 1),
-(73, 0, 1),
-(74, 0, 1),
-(75, 0, 1),
-(76, 0, 1),
-(77, 0, 1),
-(78, 0, 1),
-(79, 0, 1),
-(80, 0, 1),
-(81, 0, 1),
-(82, 0, 1),
-(83, 0, 1),
-(84, 0, 1),
-(85, 0, 1),
-(86, 0, 1),
-(87, 0, 1),
-(88, 0, 1),
-(89, 0, 1),
-(90, 0, 1),
-(91, 0, 1),
-(92, 0, 1),
-(93, 0, 1),
-(94, 0, 1),
-(95, 0, 1),
-(96, 0, 1),
-(97, 0, 1),
-(98, 0, 1),
-(99, 0, 1),
-(100, 0, 1),
-(101, 0, 1),
-(102, 0, 1),
-(103, 0, 1),
-(104, 0, 1),
-(105, 0, 1),
-(106, 0, 1),
-(107, 0, 1),
-(108, 0, 1),
-(109, 0, 1),
-(110, 0, 1),
-(111, 0, 1),
-(112, 0, 1),
-(113, 0, 1),
-(114, 0, 1),
-(115, 0, 1),
-(116, 0, 1),
-(117, 0, 1),
-(118, 0, 1),
-(119, 0, 1),
-(120, 0, 1),
-(121, 0, 1),
-(122, 0, 1),
-(123, 0, 1),
-(124, 0, 1),
-(125, 0, 1),
-(126, 0, 1),
-(127, 0, 1);
+(143, 0, 0),
+(144, 0, 1),
+(145, 0, 0),
+(146, 0, 0),
+(147, 0, 0),
+(148, 0, 1),
+(149, 0, 1),
+(150, 0, 0),
+(151, 0, 0),
+(152, 0, 1),
+(153, 0, 1),
+(154, 0, 0);
 
 --
 -- Contraintes pour les tables exportées
