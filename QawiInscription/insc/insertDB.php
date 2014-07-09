@@ -1,6 +1,6 @@
 <?php
-include("connexion.php");
-include("header.php");
+include("../connexion.php");
+include("../rel/header.php");
 /*
  RECUPERATION DONNEES FORMULAIRE
 */
@@ -61,12 +61,28 @@ if(isset($_POST['submit']))
 								));
 				if(!$reqPlanete){
 					$flag = false;
-					echo("Erreur insertion planete");
+					?>
+				<center>
+					<h1 style="color:white;"> Le nom de la planete existe déjà ! </h1>
+					<a style="color:white;" href="inscription.php" alt="Accueil">Retour au formulaire </a>
+				</center>
+				<?php
 				}
 				if(!$reqUtilisateur){
 					$flag = false;
-					echo("Erreur insertion utilisateur");
+				?>
+				<center>
+					<h1 style="color:white;"> Le pseudo existe déjà ! </h1>
+					<a style="color:white;" href="inscription.php" alt="Accueil">Retour au formulaire </a>
+				</center>
+				<?php
 				}
+				?>
+				<center>
+					<h1 style="color:white;">Félicitation vous avez été inscris !</h1>
+					<a style="color:white;" href="../Index.php" alt="Accueil">Retour à la page d'accueil </a>
+				</center>
+				<?php
 			}else {
 				$flag = false;
 				?>
@@ -74,7 +90,7 @@ if(isset($_POST['submit']))
 					alert("Les mots de passe doivent etre identiques");
 				</script>
 				<?php
-				header('Location: inscription.php');
+				header('Location: insciption.php');
 			}
 		}
 	}else{
