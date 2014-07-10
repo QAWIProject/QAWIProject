@@ -1,7 +1,7 @@
 <?php		
 try
 {
-	$bdd = new PDO('mysql:host=localhost;dbname=QAWI', 'root', 'root');
+	$bdd = new PDO('mysql:host=localhost;dbname=QAWI', 'root', '');
 }
 catch(Exception $e)
 {

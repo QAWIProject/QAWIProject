@@ -1,6 +1,6 @@
 <?php
 $nameTitle = "Bienvenue";
-include("../rel/header.php");
+	include("rel/header.php");
 ?>
 <style>
 a{
@@ -23,8 +23,9 @@ body{
 	<div class="center">
 		<h1><a href="admin/admin.php"> ADMINISTRATION</a></h1>
 		<h1><a href="insc/inscription.php">INSCRIPTION</a></h1>
+		<h1><a href="classement.php">CLASSEMENT<a/></h1>
 	</div>
 </center>
 <?php
-include("../rel/footer.php");
+	include("rel/footer.php");
 ?>
