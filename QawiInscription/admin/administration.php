@@ -47,7 +47,6 @@ include('../connexion.php');
 <?php
 	}
 ?>
-?>
 </table></center>
 <?php
 include('../rel/footer.php');
