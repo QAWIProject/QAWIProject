@@ -5,7 +5,7 @@ include('../connexion.php');
 ?>
 <center><h1 style="color:white;"> Administration </h1></center>
 
-<br />
+<br/>
 <center><table border="2" style="font-weight: bold;text-align: center;background-color: #000;font-family:helvetica;">
 
 	<tr style="color:red;">
@@ -28,7 +28,7 @@ include('../connexion.php');
 		while($rows=$selectUsers->fetch(PDO::FETCH_OBJ)){
 
 	
-?>
+	?>
 	<tr>
 		
 		<td ><?php echo $rows->id_util; ?></td>
